@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui">
+
+	<h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet library="css" name="contrato.css" />
+        <title><ui:insert name="titulo">Contrato_#{contratoGeracaoMB.contrato.id}</ui:insert></title>
+	</h:head>
+
+	<h:body>
+    	<f:metadata>
+    		<o:viewParam name="contrato" value="#{contratoGeracaoMB.contrato}" />
+    		<f:event type="preRenderView" listener="#{contratoGeracaoMB.initGeracaoPMU}" />
+    	</f:metadata>	
+	
+    	<h:form id="frmContrato">
+	    	
+	    	<table id="tbTopo" style="width:690px">
+	    		<tr>
+	    			<td colspan="2" align="center">
+	    				<h:graphicImage library="images" name="SUPERSIT.png" />
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td colspan="2" style="text-align: center;font-size: 9px;">
+	    			Associação das Empresas Delegatárias do Serviço Público de Transporte Coletivo de Passageiros<br />
+					Por Ônibus do Município de Uberlândia – Ubertrans.
+					_____________________________________________________________________________________________________________
+	    			</td>
+	    		</tr>
+				<tr>
+				  <td colspan="2" style="height: 25px;"></td>
+				</tr>	    		
+	    		<tr>
+	    			<td style="text-align: center;font-size: 20px;font-weight: bold;">
+						RELATÓRIO DE INFORMAÇÃO DE<br /> 
+						INCLUSÃO DE PUBLICIDADE EM<br /> 
+						ÔNIBUS
+	    			</td>
+	    			<td align="right" style="font-weight: bold;">
+		    			<table style="border: 1px solid black;">
+				    		<tr>
+				    			<td style="text-align: center;font-size: 22px;"><b>P.I. NÚMERO</b></td>
+				    		</tr>
+				    		<tr>
+				    			<td style="text-align: center;font-size: 32px;"><b>#{contratoGeracaoMB.contrato.id}</b></td>
+				    		</tr>
+				    	</table>
+	    			</td>
+	    		</tr>
+				<tr>
+				  <td colspan="2" style="height: 10px;"></td>
+				</tr>		    		
+	    	</table>
+	    	
+	    	<table id="tbCabecalho" style="width:700px" >
+	    		<tr>
+	    			<td style="padding: 10px 10px 0px 10px">
+						#{contratoGeracaoMB.termosContrato}	    				
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td style="padding:10px">
+		    			<table style="width: 100%;" class="tabelaBordas">
+				    		<tr>
+				    			<td>RAZÃO SOCIAL:</td>
+				    			<td colspan="3">#{contratoGeracaoMB.contrato.tbCliente.dsRazaoSocial}</td>
+				    		</tr>
+				    		<tr>
+				    			<td>CNPJ:</td>
+				    			<td colspan="3">#{contratoGeracaoMB.contrato.tbCliente.nrCnpj}</td>
+				    		</tr>				    		
+				    		<tr>
+				    			<td>Anunciante:</td>
+				    			<td colspan="3">#{contratoGeracaoMB.contrato.dsCampanha}</td>
+				    		</tr>
+				    		<tr>
+				    			<td>Data de Instalação:</td>
+				    			<td>
+									<p:outputLabel value="#{contratoGeracaoMB.contrato.dtInicio}" >
+						    			<f:convertDateTime pattern="dd/MM/yyyy" />
+						    		</p:outputLabel>				    			
+				    			</td>
+				    			<td>Data de Desinstalação:</td>
+				    			<td>
+									<p:outputLabel value="#{contratoGeracaoMB.contrato.dtFim}" >
+						    			<f:convertDateTime pattern="dd/MM/yyyy" />
+						    		</p:outputLabel>					    			
+				    			</td>
+				    		</tr>
+				    		<tr>
+				    			<td>Total de Meses Locação:</td>
+				    			<td colspan="3">
+									<p:outputLabel value="#{contratoGeracaoMB.totalMesesLocacao}" >
+										<f:convertNumber minFractionDigits="0" />
+									</p:outputLabel>				    				
+				    			</td>
+				    		</tr>
+				    		<tr>
+				    			<td style="width: 230px;">Valor Total a ser repassado ao F.M.T (Fundo Municipal de Transporte)</td>
+				    			<td colspan="3">
+					    			<h:outputText value="#{contratoGeracaoMB.contrato.vlFmt}" >
+					    				<f:convertNumber type="currency" currencySymbol="R$ "/>
+					    			</h:outputText>				    			
+				    			</td>
+				    		</tr>
+				    		<tr>
+				    			<td>Data de Repasse:</td>
+				    			<td colspan="3">
+									<p:outputLabel value="#{contratoGeracaoMB.contrato.dtRepasse}" >
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</p:outputLabel>				    				
+				    			</td>
+				    		</tr>
+				    	</table>	    			
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td style="padding:10px">
+		    			<table style="width: 100%;" class="tabelaBordas">
+				    		<tr>
+				    			<th>Tipo da Mídia</th>
+				    			<th>QTD</th>
+				    		</tr>
+				    		<p:dataList value="#{contratoGeracaoMB.contratoProduto}" var="produto" type="none">
+					    		<tr>
+					    			<td>
+						    			#{produto.tbProduto.dsDescricao}
+					    			</td>
+					    			<td>#{produto.nrQuantidade}</td>
+					    		</tr>				    		
+				    		</p:dataList>
+				    	</table>	    			
+	    			</td>
+	    		</tr>	    		
+	    		<tr>
+	    			<td style="padding:0px 10px 0px 10px;">
+				    	<table style="width: 100%">
+							<tr>
+								<td>Por ser verdade, firmo o presente.</td>
+							</tr>
+						</table>
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td style="padding:0px 10px 0px 10px;">
+				    	<table style="width: 100%" >
+				    		<tr>
+				    			<td>
+				    				#{contratoGeracaoMB.contrato.tbFilial.dsCidade}, 	  
+									<p:outputLabel value="#{contratoGeracaoMB.contrato.dtContrato}" >
+						    			<f:convertDateTime pattern="d 'de'  MMMMM 'de' yyyy" />
+						    		</p:outputLabel>
+				    			</td>
+				    		</tr>
+				    	</table>
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td style="padding:0px 10px 0px 10px">
+				    	<table style="width: 100%">
+				    		<tr>
+				    			<td style="text-align: center;">
+				    				__________________________________<br />
+							    	Iverton Alves Mantovani<br />
+							    	CPF: 880.572.329-00
+				    			</td>
+				    		</tr>
+				    	</table>	    
+			    	</td>		
+	    		</tr>
+	    	</table>
+	    	
+    	</h:form>
+    	
+	</h:body>
+</html>
+
+    
+    

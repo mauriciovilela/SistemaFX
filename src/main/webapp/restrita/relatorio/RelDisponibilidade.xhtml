@@ -1,0 +1,74 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Relatório de Disponibilidade</ui:define>
+    
+    <ui:define name="corpo">
+    	<h:form id="frmPesquisa">
+
+	    	<p:messages autoUpdate="true" closable="true" />
+	 
+			<div class="Titulo">Relatório de Disponibilidade</div>
+
+	    	<p:panelGrid columns="6" id="pnlPesquisa" style="width: 500px;">
+
+				<p:outputLabel value="Empresa" for="idEmpresa" />  
+		        <p:selectOneMenu id="idEmpresa" value="#{relDisponibilidadeMB.empresa}" filter="true" style="width: 200px;">  
+		            <f:selectItem itemLabel="" itemValue="" />  
+		            <f:selectItems value="#{relDisponibilidadeMB.empresas}"
+		            	var="item" itemLabel="#{item.dsNome}" itemValue="#{item}" />  
+		        </p:selectOneMenu> 	
+
+				<p:outputLabel value="Data" for="data" />  
+	    		<p:calendar id="data" size="15" pattern="dd/MM/yyyy" mask="true" 
+	    			value="#{relDisponibilidadeMB.data}" locale="pt_BR" />
+					    	
+	    			<p:commandButton value="Pesquisar" action="#{relDisponibilidadeMB.pesquisar}"
+	    				process="@form" update="@form" icon="ui-icon-search" />
+	    		
+	    	</p:panelGrid>
+	    	
+	    	<p:outputPanel rendered="#{relDisponibilidadeMB.relatorio ne null}" style="margin-top:10px;">
+		    	
+<!-- 				<ui:insert name="legenda"> -->
+<!-- 		            <ui:include src="Legenda.xhtml" /> -->
+<!-- 		        </ui:insert>	    		 -->
+	    		
+		    	<p:dataTable id="dtbRegistros" value="#{relDisponibilidadeMB.relatorio}" var="item"
+		    		style="margin-top: 12px;width: 600px;" emptyMessage="Nenhum registro encontrado." 
+		    		rowStyleClass="#{item.campanha eq null ? 'verde' : 'vermelha'}">
+					<f:facet name="header">
+        				Disponibilidade => Empresa: #{relDisponibilidadeMB.empresa.dsNome}, Data: #{relDisponibilidadeMB.dataFormatada}
+    				</f:facet>
+		    		<p:column headerText="Carro" style="width: 55px;">
+		    			<h:outputText value="#{item.carro}" />
+		    		</p:column>
+<!-- 		    		<p:column headerText="Empresa" > -->
+<!-- 		    			<h:outputText value="#{item.empresa}" /> -->
+<!-- 		    		</p:column> -->
+		    		<p:column headerText="Campanha">
+		    			<h:outputText value="#{item.campanha}" />
+		    		</p:column>
+		    		<p:column headerText="Interno" style="width: 55px;text-align:center;">
+		    			<h:outputText value="#{item.interno eq 0 ? '' : 'X'}" />
+		    		</p:column>
+		    		<p:column headerText="Externo" style="width: 55px;text-align:center;">
+		    			<h:outputText value="#{item.externo eq 0 ? '' : 'X'}" />
+		    		</p:column>
+		    	</p:dataTable>
+		    	
+	    	</p:outputPanel>
+	    	
+			<p:commandButton value="Imprimir" type="button" icon="ui-icon-print"
+			 	rendered="#{relDisponibilidadeMB.relatorio ne null}" style="margin-top: 15px;margin-bottom:15px;">
+			    <p:printer target="dtbRegistros" />
+			</p:commandButton>
+	    	
+    	</h:form>
+    	
+    </ui:define>
+</ui:composition>

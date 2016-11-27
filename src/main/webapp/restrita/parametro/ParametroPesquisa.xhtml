@@ -1,0 +1,61 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Pesquisa de Parametro</ui:define>
+    
+    <ui:define name="corpo">
+    	<h:form id="frmPesquisa">
+
+	    	<p:messages autoUpdate="true" closable="true" />
+	 
+	 		<p:focus context="pnlPesquisa" /> 
+
+			<div class="Titulo">Pesquisa de Parâmetro</div>
+	 
+	    	<p:panelGrid columns="2" id="pnlPesquisa" style="width: 100%; ">
+				
+	    		<p:outputLabel value="Nome" for="nome"/>
+	    		<p:inputText id="nome" size="40" value="#{parametroPesquisaMB.filtro.descricao}" styleClass="maiusculo" />
+
+	    		<f:facet name="footer">
+	    			<p:commandButton value="Pesquisar" action="#{parametroPesquisaMB.pesquisar}"
+	    				update="@form" icon="ui-icon-search" />
+	    		</f:facet>
+	    		
+	    	</p:panelGrid>
+	    	
+	    	<p:dataTable id="dtbRegistros" value="#{parametroPesquisaMB.filtrados}" var="item"
+	    		style="margin-top: 12px" emptyMessage="Nenhum registro encontrado." rows="20"
+	    		paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom">
+	    		<p:column headerText="Código" style="text-align: center;width: 50px;">
+	    			<h:outputText value="#{item.id}" />
+	    		</p:column>
+	    		<p:column headerText="Nome" style="width: 200px;">
+	    			<h:outputText value="#{item.dsNome}" styleClass="maiusculo" />
+	    		</p:column>
+	    		<p:column headerText="Valor">
+	    			<h:outputText value="#{item.dsValor}" styleClass="maiusculo" />
+	    		</p:column>
+	    		<p:column style="width: 60px; text-align: center">
+	    			<p:button outcome="/restrita/parametro/Parametro" icon="ui-icon-pencil" title="Editar">
+	    				<f:param name="parametro" value="#{item.id}" />
+	    			</p:button>
+	    		</p:column>
+	    	</p:dataTable>
+	    	
+	    	<p:confirmDialog header="Exclusão" 
+	    		message="Tem certeza que deseja excluir ?"
+	    		widgetVar="confirmacaoExclusao"	id="confirmacaoExclusaoDialog">
+	    		<p:commandButton value="Sim" oncomplete="PF('confirmacaoExclusao').hide();"
+	    			action="#{parametroPesquisaMB.excluir}" process="@this"
+	    			update=":frmPesquisa:dtbRegistros" />
+	    		<p:button value="Não" onclick="PF('confirmacaoExclusao').hide(); return false;" />
+	    	</p:confirmDialog>
+	    	
+    	</h:form>
+    </ui:define>
+</ui:composition>

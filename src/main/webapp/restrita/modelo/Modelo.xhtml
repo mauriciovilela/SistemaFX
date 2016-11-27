@@ -1,0 +1,49 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">#{modeloMB.editando ? 'Edição de registro' : 'Novo registro'}</ui:define>
+    
+    <ui:define name="corpo">
+    	<f:metadata>
+    		<o:viewParam name="modelo" value="#{modeloMB.modelo}" />
+    	</f:metadata>
+    
+    	<h:form>
+
+	    	<p:messages autoUpdate="true" closable="true" />
+	    	
+	    	<p:focus context="painel" /> 
+	    	
+	    	<div class="Titulo">#{modeloMB.editando ? 'Edição de registro' : 'Novo registro'}</div>
+	    	
+	    	<p:panelGrid columns="2" id="painel" style="width: 100%; ">
+	    		
+	    		<p:outputLabel value="Descrição" for="dsDescricao"/>
+	    		<p:inputText id="dsDescricao" size="40" maxlength="100" value="#{modeloMB.modelo.dsDescricao}" styleClass="maiusculo" />
+	    		
+	    		<p:outputLabel value="Gab Bus" for="dsGabBus"/>
+	    		<p:inputText id="dsGabBus" size="40" maxlength="100" value="#{modeloMB.modelo.dsGabBus}" />
+	    		
+	    		<p:outputLabel value="Gab Back" for="dsGabBack"/>
+	    		<p:inputText id="dsGabBack" size="40" maxlength="100" value="#{modeloMB.modelo.dsGabBack}" />
+
+	    		<p:outputLabel value="Gab In" for="dsGabIn"/>
+	    		<p:inputText id="dsGabIn" size="40" maxlength="100" value="#{modeloMB.modelo.dsGabIn}" />
+
+	    		<f:facet name="footer">
+	    			<p:commandButton value="Salvar" id="botaoSalvar"
+	    				action="#{modeloMB.salvar}" update="@form" icon="ui-icon-circle-check" />	    		
+	    			<p:button value="Limpar" outcome="/restrita/modelo/Modelo" icon="ui-icon-close" />
+	    			<p:button value="Voltar" outcome="/restrita/modelo/ModeloPesquisa" 
+	    				icon="ui-icon-arrowreturnthick-1-w" style="margin-left: 25px;" />	    			
+	    		</f:facet>
+	    		
+	    	</p:panelGrid>
+    	</h:form>
+    </ui:define>
+</ui:composition>

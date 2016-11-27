@@ -1,0 +1,113 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Relatório de CheckIn Visual</ui:define>
+    
+    <ui:define name="corpo">
+    
+    	<h:form id="frmPesquisa">
+
+	    	<p:messages autoUpdate="true" closable="true" />
+	 
+			<div class="Titulo">Relatório de CheckIn Visual</div>
+
+	    	<p:panelGrid columns="2" id="pnlPesquisa" style="width: 500px;">
+
+				<p:outputLabel value="Empresa" for="idEmpresa" />  
+		        <p:selectOneMenu id="idEmpresa" value="#{relCheckInMB.empresa}" filter="true" style="width: 200px;">  
+		            <f:selectItem itemLabel="" itemValue="" />  
+		            <f:selectItems value="#{relCheckInMB.empresas}"
+		            	var="item" itemLabel="#{item.dsNome}" itemValue="#{item}" />  
+		        </p:selectOneMenu>
+		        
+		        <p:outputLabel value="Tipo Produto" for="tipo" />
+				<p:selectOneRadio id="tipo" value="#{relCheckInMB.idTipoProduto}">
+		            <f:selectItem itemLabel="Interno" itemValue="2" />
+		            <f:selectItem itemLabel="Externo" itemValue="1" />
+		        </p:selectOneRadio>
+		        
+		        <p:outputLabel value="Linha ou Campanha" for="idFiltro" />		  
+		    	<p:selectOneRadio id="idFiltro" value="#{relCheckInMB.filtroLinhaCampanha}">
+		    		<p:ajax listener="#{relCheckInMB.mudaEstadoFiltros}"
+	    				update="pnlPesquisa" process="@this" />
+		    		<f:selectItem itemLabel="Linha" itemValue="L" />
+		    		<f:selectItem itemLabel="Campanha" itemValue="C" />
+		    	</p:selectOneRadio>
+		        
+		        <p:outputLabel value="" for="idLinha" rendered="#{relCheckInMB.filtroLinhaCampanha eq 'L'}" />       	
+		        <p:selectOneMenu id="idLinha" value="#{relCheckInMB.linha}" filter="true" style="width: 200px;"
+		        	rendered="#{relCheckInMB.filtroLinhaCampanha eq 'L'}">  
+		            <f:selectItem itemLabel="" itemValue="" />  
+		            <f:selectItems value="#{relCheckInMB.linhas}"
+		            	var="item" itemLabel="#{item.dsNome}" itemValue="#{item}" />  
+		        </p:selectOneMenu>	  
+
+	    		<p:outputLabel value="" for="dsCampanha" rendered="#{relCheckInMB.filtroLinhaCampanha eq 'C'}" />
+	    		<p:inputText id="dsCampanha" widgetVar="_dsCampanha" size="30" value="#{relCheckInMB.dsCampanha}" 
+	    			rendered="#{relCheckInMB.filtroLinhaCampanha eq 'C'}" />
+					    	
+				<f:facet name="footer">
+	    			<p:commandButton value="Pesquisar" action="#{relCheckInMB.pesquisar}"
+	    				process="@form" update="@form" icon="ui-icon-search" />
+				</f:facet>	    	
+	    		
+	    	</p:panelGrid>
+	    		    	 	
+	    	<p:outputPanel rendered="#{relCheckInMB.relatorio ne null}" style="width: 630px;margin-top: 10px;">
+	    		<p:outputLabel value="Total: #{relCheckInMB.relatorio.size()}"></p:outputLabel>
+	    	</p:outputPanel>
+	    	
+	    	<p:outputPanel rendered="#{relCheckInMB.relatorio ne null}" style="margin-top:10px;">
+			    	
+<!-- 				<ui:insert name="legenda"> -->
+<!-- 		            <ui:include src="Legenda.xhtml" /> -->
+<!-- 		        </ui:insert>	    		 -->
+	    	
+		    	<p:dataTable id="dtbRegistros" value="#{relCheckInMB.relatorio}" var="item"
+		    		style="margin-top: 12px;width: 630px;" emptyMessage="Nenhum registro encontrado."
+		    		paginator="false" rowIndexVar="rowIndex" 
+		    		rowStyleClass="#{rowIndex mod 2 eq 0 ? 'emDestaqueGrid' : ''}">
+					<f:facet name="header">
+        				CheckIn Visual => Empresa: #{relCheckInMB.empresa.dsNome}, Tipo: #{relCheckInMB.tipoProduto}
+    				</f:facet>			        	
+		    		<p:column headerText="Carro" style="width: 50px;text-align: center;">
+		    			<h:outputText value="#{item.carro}" />
+		    		</p:column>
+		    		<p:column headerText="Início" style="text-align: center;">
+		    			<h:outputText value="#{item.inicio}" > <f:convertDateTime pattern="dd/MM/yyyy" /> </h:outputText>
+		    		</p:column>
+		    		<p:column headerText="Fim" style="text-align: center;">
+		    			<h:outputText value="#{item.fim}" > <f:convertDateTime pattern="dd/MM/yyyy" /> </h:outputText>
+		    		</p:column>
+		    		<p:column headerText="Campanha" style="width: 330px;">
+		    			<h:outputText value="#{item.campanha eq null ? '' : item.campanha}" />
+		    		</p:column>
+		    	</p:dataTable>
+	    	
+	    	</p:outputPanel>
+
+			<p:commandButton value="Imprimir" type="button" icon="ui-icon-print"
+			 	rendered="#{relCheckInMB.relatorio ne null}" style="margin-top: 15px;margin-bottom:15px;">
+			    <p:printer target="dtbRegistros" />
+			</p:commandButton>
+	    				
+	    	<div class="botoesExportar">	
+	    	
+				<h:commandLink rendered="#{relCheckInMB.relatorio ne null}">
+					<h:graphicImage library="images" name="ico_excel.png"/>
+					<p:dataExporter type="xls" target="dtbRegistros" fileName="CheckInEXCEL" />
+	            </h:commandLink>
+				
+				<h:commandLink rendered="#{relCheckInMB.relatorio ne null}">
+					<h:graphicImage library="images" name="ico_pdf.png"/>
+					<p:dataExporter type="pdf" target="dtbRegistros" fileName="CheckInPDF" />
+	            </h:commandLink>
+            </div>
+    	</h:form>
+    	
+    </ui:define>
+</ui:composition>

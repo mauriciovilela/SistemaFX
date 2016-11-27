@@ -1,0 +1,90 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:pe="http://primefaces.org/ui/extensions" 
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Pesquisa de Cliente</ui:define>
+    
+    <ui:define name="corpo">
+    	<h:form id="frmPesquisa">
+
+	    	<p:messages autoUpdate="true" closable="true" />
+	 
+	 		<p:focus context="pnlPesquisa" /> 
+
+			<div class="Titulo">Pesquisa de Cliente</div>
+	 
+	    	<p:panelGrid columns="2" id="pnlPesquisa" style="width: 100%; ">
+				
+	    		<p:outputLabel value="Nome" for="nome"/>
+	    		<p:inputText id="nome" size="40" value="#{clientePesquisaMB.filtro.descricao}" styleClass="maiusculo" />
+				
+	    		<p:outputLabel value="CNPJ" for="CNPJ"/>
+	    		<p:inputText id="CNPJ" size="40" value="#{clientePesquisaMB.filtro.outros}" styleClass="maiusculo" >
+	    			<pe:keyFilter mask="num"></pe:keyFilter>
+	    		</p:inputText>
+
+	    		<f:facet name="footer">
+	    			<p:commandButton value="Pesquisar"
+	    				update="@form" icon="ui-icon-search" />
+	    			<p:button value="Novo" outcome="/restrita/cliente/Cliente" icon="ui-icon-plusthick" />	
+	    		</f:facet>
+	    		
+	    	</p:panelGrid>
+	    	
+	    	<p:dataTable id="dtbRegistros" value="#{clientePesquisaMB.filtrados}" var="item"
+	    		style="margin-top: 12px" emptyMessage="Nenhum registro encontrado." rows="20"
+	    		paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom" lazy="true">
+	    		<p:column headerText="Nome Fantasia">
+	    			<h:outputText value="#{item.dsNomeFantasia}" styleClass="maiusculo" />
+	    		</p:column>
+	    		<p:column headerText="Razão Social">
+	    			<h:outputText value="#{item.dsRazaoSocial}" styleClass="maiusculo" />
+	    		</p:column>
+	    		<p:column headerText="CNPJ" >
+	    			<h:outputText value="#{item.nrCnpj}" />
+	    		</p:column>	    		
+	    		<p:column headerText="Telefone" style="width: 85px;" >
+	    			<h:outputText value="#{item.dsFoneResidencial}" />
+	    		</p:column>
+	    		<p:column headerText="Celular" style="width: 85px;" >
+	    			<h:outputText value="#{item.dsFoneCelular}" />
+	    		</p:column>
+	    		<p:column headerText="Endereço" >
+	    			<h:outputText value="#{item.dsEndereco}" styleClass="maiusculo" />
+	    		</p:column>
+	    		<p:column headerText="Responsável" >
+	    			<h:outputText value="#{item.dsResponsavel}" />
+	    		</p:column>
+	    		<p:column headerText="E-mail" >
+	    			<h:outputText value="#{item.dsEmail}" styleClass="minusculo" />
+	    		</p:column>
+	    		<p:column headerText="IE" >
+	    			<h:outputText value="#{item.dsIncricaoEstadual}" />
+	    		</p:column>
+	    		<p:column style="width: 60px; text-align: center">
+	    			<p:button outcome="/restrita/cliente/Cliente" icon="ui-icon-pencil" title="Editar">
+	    				<f:param name="cliente" value="#{item.id}" />
+	    			</p:button>
+	    			<p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="PF('confirmacaoExclusao').show()"
+	    					process="@this" update=":frmPesquisa:confirmacaoExclusaoDialog">
+	    				<f:setPropertyActionListener target="#{clientePesquisaMB.selecionado}" value="#{item}" />
+	    			</p:commandButton>
+	    		</p:column>
+	    	</p:dataTable>
+	    	
+	    	<p:confirmDialog header="Exclusão" 
+	    		message="Tem certeza que deseja excluir ?"
+	    		widgetVar="confirmacaoExclusao"	id="confirmacaoExclusaoDialog">
+	    		<p:commandButton value="Sim" oncomplete="PF('confirmacaoExclusao').hide();"
+	    			action="#{clientePesquisaMB.excluir}" process="@this"
+	    			update=":frmPesquisa:dtbRegistros" />
+	    		<p:button value="Não" onclick="PF('confirmacaoExclusao').hide(); return false;" />
+	    	</p:confirmDialog>
+	    	
+    	</h:form>
+    </ui:define>
+</ui:composition>

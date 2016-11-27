@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+	<h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title><ui:insert name="titulo">Sistema FX</ui:insert></title>
+        <h:outputStylesheet library="css" name="sistema.css" />
+        <h:outputScript library="js" name="locale.js"></h:outputScript>     
+        <h:outputScript library="js" name="jquery.maskedinput.min.js"></h:outputScript>        
+	</h:head>
+
+	<h:body>
+    		
+<!-- 		<p:hotkey bind="F1" handler="location.href='/SistemaFX/paginaAgenda/Agenda.xhtml';" /> -->
+<!-- 		<p:hotkey bind="F5" handler="location.href='/SistemaFX/paginaPaciente/PacientePesquisa.xhtml';" /> -->
+
+		<p:ajaxStatus onstart="PF('ajaxLoading').show();" onsuccess="PF('ajaxLoading').hide();" />  
+		              
+		<p:dialog widgetVar="ajaxLoading" header="Carregando"   
+		        draggable="false" closable="false">  
+			<h:graphicImage library="images" name="ajaxloadingbar.gif"/>
+		</p:dialog>  		
+	
+		<div class="header">
+			<h:link value="Sistema FX" outcome="/aberta/Home" style="text-decoration: none;color: white;font-size: 13px;font-weight: bold;" />
+			<span style="float: right">
+				#{usuarioLogado.dsNome} 
+				<p:commandLink icon="ui-icon-minusthick" value="Sair" action="#{loginMB.doLogout}" 
+					style="color:white;padding-left:10px;" /> 
+			</span>
+		</div>
+
+		<div>
+			<!-- Formulário principal -->				
+			<h:form>
+				<!-- Menu dinâmico -->
+				<p:menubar model="#{loginMB.menuModel}" autoDisplay="true" />
+			</h:form>
+		</div>
+		
+		<div id="conteudo">
+			<!-- Conteúdo das páginas -->
+			<ui:insert name="corpo"/>
+		</div>
+
+	</h:body>
+	
+</html>

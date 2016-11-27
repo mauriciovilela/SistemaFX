@@ -1,0 +1,68 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Módudo / Funcionalidade</ui:define>
+    
+    <ui:define name="corpo">
+    	<h:form id="frmPesquisa">
+
+	    	<p:messages autoUpdate="true" closable="true" />
+	 
+			
+			<div style="position: relative;float: left;width: 39%;">
+			
+				<div class="Titulo">Módudo</div>
+
+		    	<p:dataTable id="dtbModulos" value="#{funcionalidadePesquisaMB.modulos}" var="item"
+		    		style="" emptyMessage="Nenhum registro encontrado." rows="20"
+		    		paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom">
+		    		<p:column style="width: 30px; text-align: center">
+			    		<p:commandButton icon="ui-icon-search" process="@this" title="Funcionalidades do Módulo"
+			    				actionListener="#{funcionalidadePesquisaMB.pesquisarPorModulos(item)}" 
+			    				update=":frmPesquisa:dtbFuncinalidades">
+			    		</p:commandButton>	    			
+		    		</p:column>	    		
+		    		<p:column headerText="Código" style="text-align: center;width: 50px;">
+		    			<h:outputText value="#{item.id}" />
+		    		</p:column>
+		    		<p:column headerText="Nome">
+		    			<h:outputText value="#{item.dsNome}" />
+		    		</p:column>
+		    		<p:column style="width: 60px; text-align: center">
+		    			<p:button outcome="/restrita/funcionalidade/Funcionalidade" icon="ui-icon-pencil" title="Editar">
+		    				<f:param name="funcionalidade" value="#{item.id}" />
+		    			</p:button>
+		    		</p:column>
+		    	</p:dataTable>
+    		
+		    </div>
+		 
+		    <div style="position: relative;float: right;width: 60%;">
+		    
+				<div class="Titulo">Funcionalidade</div>
+				
+		    	<p:dataTable id="dtbFuncinalidades" value="#{funcionalidadePesquisaMB.funcionalidades}" var="item"
+		    		style="" emptyMessage="Nenhum registro encontrado." rows="20"
+		    		paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom">
+		    		<p:column headerText="Código" style="text-align: center;width: 50px;">
+		    			<h:outputText value="#{item.id}" />
+		    		</p:column>
+		    		<p:column headerText="Nome">
+		    			<h:outputText value="#{item.dsNome}" />
+		    		</p:column>
+		    		<p:column style="width: 60px; text-align: center">
+		    			<p:button outcome="/restrita/funcionalidade/Funcionalidade" icon="ui-icon-pencil" title="Editar">
+		    				<f:param name="funcionalidade" value="#{item.id}" />
+		    			</p:button>
+		    		</p:column>
+		    	</p:dataTable>
+		    	
+		    </div>	
+    	
+    	</h:form>
+    </ui:define>
+</ui:composition>

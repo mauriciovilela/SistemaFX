@@ -1,0 +1,52 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">#{agenciaMB.editando ? 'Edição de registro' : 'Novo registro'}</ui:define>
+    
+    <ui:define name="corpo">
+    	<f:metadata>
+    		<o:viewParam name="agencia" value="#{agenciaMB.agencia}" />
+    	</f:metadata>
+    
+    	<h:form>
+
+	    	<p:messages autoUpdate="true" closable="true" />
+	    	
+	    	<p:focus context="painel" /> 
+	    	
+	    	<div class="Titulo">#{agenciaMB.editando ? 'Edição de registro' : 'Novo registro'}</div>
+	    	
+	    	<p:panelGrid columns="2" id="painel" style="width: 100%; ">
+	    		
+	    		<p:outputLabel value="Nome" for="dsNome"/>
+	    		<p:inputText id="dsNome" size="40" maxlength="100" value="#{agenciaMB.agencia.dsNome}" styleClass="maiusculo" />
+	    		
+	    		<p:outputLabel value="Responsável" for="dsResponsavel"/>
+	    		<p:inputText id="dsResponsavel" size="40" maxlength="60" value="#{agenciaMB.agencia.dsResponsavel}" styleClass="maiusculo" />
+	    		
+	    		<p:outputLabel value="Telefone" for="dsFone"/>
+	    		<p:inputMask id="dsFone" size="40" mask="(99) 9999-9999?9" value="#{agenciaMB.agencia.dsFone}" />
+	    			    				
+	    		<p:outputLabel value="Endereço" for="dsEndereco"/>
+	    		<p:inputText id="dsEndereco" size="40" maxlength="100" value="#{agenciaMB.agencia.dsEndereco}" styleClass="maiusculo" />
+	    		
+	    		<p:outputLabel value="Observação" for="dsObservacao"/>
+	    		<p:inputTextarea id="dsObservacao" maxlength="200" value="#{agenciaMB.agencia.dsObservacao}" styleClass="maiusculoTextArea" />
+	    					    		
+	    		<f:facet name="footer">
+	    			<p:commandButton value="Salvar" id="botaoSalvar"
+	    				action="#{agenciaMB.salvar}" update="@form" icon="ui-icon-circle-check" />	    		
+	    			<p:button value="Limpar" outcome="/restrita/agencia/Agencia" icon="ui-icon-close" />
+	    			<p:button value="Voltar" outcome="/restrita/agencia/AgenciaPesquisa" 
+	    				icon="ui-icon-arrowreturnthick-1-w" style="margin-left: 25px;" />	    			
+	    		</f:facet>
+	    		
+	    	</p:panelGrid>
+    	</h:form>
+    </ui:define>
+</ui:composition>

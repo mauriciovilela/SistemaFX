@@ -1,0 +1,187 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pe="http://primefaces.org/ui/extensions"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Carro X Produto</ui:define>
+    
+    <ui:define name="corpo">
+    	<f:metadata>
+    		<o:viewParam name="contrato" value="#{contratoCarroMB.contrato}" />
+    	</f:metadata>
+    
+    	<h:form id="frmContratoCarro">
+    	
+	    	<p:messages autoUpdate="true" closable="true" />
+	    	
+	    	<div class="Titulo">Carro X Produto</div>
+	    	
+	    	<p:focus context="pnlPesquisa"></p:focus>
+
+	    	<p:panelGrid columns="4" id="pnlPesquisa" style="width: 500px;">
+				
+	    		<p:outputLabel value="Código Contrato" for="cdContrato" />
+	    		<p:inputText id="cdContrato" size="15" value="#{contratoCarroMB.codigoContrato}"
+	    			disabled="#{not empty contratoCarroMB.contratoCarros}" >
+	    			<pe:keyFilter mask="num"/>
+	    		</p:inputText>
+	    		
+	    		<f:facet name="footer">
+		    		<p:commandButton value="Pesquisar" action="#{contratoCarroMB.pesquisar}" process="pnlPesquisa"
+		    				update="@form" icon="ui-icon-search" />
+		    		<p:button value="Limpar" outcome="/restrita/contrato/ContratoCarro" icon="ui-icon-close" />		
+	    		</f:facet>
+	    		
+	    	</p:panelGrid>
+	    	
+	    	<p:outputPanel rendered="#{contratoCarroMB.codigoContrato ne null}">
+	    		    	
+		    	<div style="position: relative;float: left;width: 34%;">
+		 
+			    	<p:fieldset legend="Dados do Contrato" style="margin-top:10px;">
+			    	    	
+				    	<p:panelGrid columns="2" id="painel" 
+				    		 styleClass="formDetalhe">
+			
+							<p:outputLabel value="Cliente" for="idCliente" />
+							<p:outputLabel id="idCliente" value="#{contratoCarroMB.contrato.tbCliente.dsNomeFantasia}" />  
+								    								    								    				    		
+				    		<p:outputLabel value="Campanha" for="dsCampanha"/>
+				    		<p:outputLabel id="dsCampanha" value="#{contratoCarroMB.contrato.dsCampanha}" />
+								    			
+							<p:outputLabel value="Agencia" for="idAgencia" />  
+							<p:outputLabel id="idAgencia" value="#{contratoCarroMB.contrato.tbAgencia.dsNome}" />
+								    			
+							<p:outputLabel value="Vendedor" for="idVendedor" />  
+							<p:outputLabel id="idVendedor" value="#{contratoCarroMB.contrato.tbVendedor.dsNome}" />
+				    		
+				    		<p:outputLabel value="Data Contrato" for="dtContrato"/>
+				    		<p:outputLabel id="dtContrato" value="#{contratoCarroMB.contrato.dtContrato}" >
+				    			<f:convertDateTime pattern="dd/MM/yyyy" />
+				    		</p:outputLabel>
+				    		
+				    		<p:outputLabel value="Vigência" for="outVigencia"/>
+				    		<p:outputPanel id="outVigencia">
+					    		<p:outputLabel id="dtInicio" value="#{contratoCarroMB.contrato.dtInicio}" >
+					    			<f:convertDateTime pattern="dd/MM/yyyy" />
+					    		</p:outputLabel> à 
+					    		<p:outputLabel id="dtFim" value="#{contratoCarroMB.contrato.dtFim}" >
+					    			<f:convertDateTime pattern="dd/MM/yyyy" />
+					    		</p:outputLabel>
+				    		</p:outputPanel>
+				    		
+				    		<p:outputLabel value="Valor Total / Sub Total" for="vlSubTotalContrato"/>
+				    		<p:outputPanel id="outValor">
+					    		<p:outputLabel id="vlTotalContrato" value="#{contratoCarroMB.contrato.vlTotal}" >
+					    			<f:convertNumber type="currency" currencySymbol="R$ "/>
+					    		</p:outputLabel> / 
+					    		<p:outputLabel id="vlSubTotalContrato" value="#{contratoCarroMB.contrato.vlSubTotal}" >
+					    			<f:convertNumber type="currency" currencySymbol="R$ "/>
+					    		</p:outputLabel>
+				    		</p:outputPanel>	    		
+				    		
+<!-- 				    		<p:commandButton value="Produtos" icon="ui-icon-extlink" process="@this"  -->
+<!-- 				    				actionListener=""> -->
+<!-- 				    		</p:commandButton> -->
+				    		    		
+				    	</p:panelGrid>
+			    	
+			    	</p:fieldset>
+	 
+		    	</div>
+		    	
+		    	<div style="position: relative;float: right;width: 65%;">
+		    	
+			    	<p:fieldset legend="Associar Carros e Produtos" style="margin-top:10px;">
+	
+						<p:panelGrid columns="2" id="painelItens">
+		
+							<p:outputLabel value="Carro" for="idCarro" />
+							<p:selectOneMenu id="idCarro" value="#{contratoCarroMB.contratoCarro.tbCarro}" filter="true" 
+								style="width: 250px;" disabled="#{contratoCarroMB.contrato.id == null}" >
+								<f:selectItem itemLabel="" itemValue="" />
+								<f:selectItems value="#{contratoCarroMB.carros}" var="item"
+									itemLabel="#{item.id}" itemValue="#{item}" />
+							</p:selectOneMenu>
+		
+							<p:outputLabel value="Produto" for="idProduto" />
+							<p:selectOneMenu id="idProduto" value="#{contratoCarroMB.contratoCarro.tbProduto}" filter="true" 
+								style="width: 250px;" disabled="#{contratoCarroMB.contrato.id == null}" >
+								<f:selectItem itemLabel="" itemValue="" />
+								<f:selectItems value="#{contratoCarroMB.produtos}" var="item"
+									itemLabel="#{item.dsDescricao}" itemValue="#{item}" />
+							</p:selectOneMenu>
+		
+							<f:facet name="footer">
+								<p:commandButton value="Adicionar"
+									action="#{contratoCarroMB.verificaAdicionarItem}" process="painelItens"
+									update="@form" icon="ui-icon-plus" disabled="#{contratoCarroMB.contrato.id == null}" ajax="true" />
+								<p:commandButton value="Limpar" action="#{contratoCarroMB.limparItem}"
+									icon="ui-icon-close" process="@this" update="painelItens" disabled="#{contratoCarroMB.contrato.id == null}" />
+							</f:facet>
+													
+						</p:panelGrid>
+		
+				    	<p:outputPanel id="outItens">
+				    	
+							<p:dataTable value="#{contratoCarroMB.contratoCarros}" var="item" id="dtbContratoProduto" emptyMessage="Nenhum registro encontrado.">
+								<p:column headerText="Carro" style="">
+									<h:outputText value="#{item.tbCarro.id}" styleClass="maiusculo" />
+								</p:column>
+								<p:column headerText="Produto" style="">
+									<h:outputText value="#{item.tbProduto.dsDescricao}" styleClass="maiusculo" />
+								</p:column>
+								<p:column style="width: 20px;">
+					    			<p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="PF('confirmacaoExclusao').show()"
+					    					process="@this" update=":frmContratoCarro:confirmacaoExclusaoDialog">
+										<f:setPropertyActionListener target="#{contratoCarroMB.selecionado}" value="#{item}" />
+									</p:commandButton> 
+								</p:column>
+							</p:dataTable>
+							
+						</p:outputPanel>   		   			    								     
+		   								
+			    	</p:fieldset>
+	   	
+		    	</div>
+	 
+	    	</p:outputPanel>
+
+	   		<p:dialog header="Validação" widgetVar="confirmValidacao" modal="true">
+	   			<div style="padding:10px 0px 0px 0px">Este carro está sendo utilizado pelo contrato abaixo.</div>
+		    	<p:dataTable id="dtbContrato" value="#{contratoCarroMB.alugados}" var="item"
+		    		style="margin-top: 12px;width: 450px;" emptyMessage="Nenhum registro encontrado." rows="20"
+		    		paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom">
+		    		<p:column headerText="Codigo" style="width: 50px;">
+		    			<h:outputText value="#{item.codigoContrato}" />
+		    		</p:column>
+		    		<p:column headerText="Campanha">
+		    			<h:outputText value="#{item.dsCampanha}" />
+		    		</p:column>
+		    		<p:column headerText="Vigência" style="width: 135px;">
+		    			<h:outputText value="#{item.dtInicio}" > <f:convertDateTime pattern="dd/MM/yyyy" /> </h:outputText>
+		    			à <h:outputText value="#{item.dtFim}" > <f:convertDateTime pattern="dd/MM/yyyy" /> </h:outputText>
+		    		</p:column>	    		
+		    	</p:dataTable>
+		    	<div style="padding-top:10px;padding-bottom:10px">Confirma inclusão ?</div>	 	   			
+	    		<p:commandButton value="Sim" oncomplete="PF('confirmValidacao').hide();"
+	    			action="#{contratoCarroMB.adicionarItem}" process="@this" update="dtbContrato" />
+	    		<p:button value="Não" onclick="PF('confirmValidacao').hide(); return false;" />
+	   		</p:dialog>	    	
+	    	
+	    	<p:confirmDialog header="Exclusão" 
+	    		message="Tem certeza que deseja excluir ?"
+	    		widgetVar="confirmacaoExclusao"	id="confirmacaoExclusaoDialog">
+	    		<p:commandButton value="Sim" oncomplete="PF('confirmacaoExclusao').hide();"
+	    			action="#{contratoCarroMB.removerItem}" process="@this"
+	    			update=":frmContratoCarro:dtbContratoProduto" />
+	    		<p:button value="Não" onclick="PF('confirmacaoExclusao').hide(); return false;" />
+	    	</p:confirmDialog>
+	    	
+    	</h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,121 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui"
+    xmlns:pe="http://primefaces.org/ui/extensions"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+    <ui:define name="titulo">Fotos do Contrato</ui:define>
+    
+    <ui:define name="corpo">
+
+    	<f:metadata>
+    		<o:viewParam name="contrato" value="#{contratoFotosMB.contrato}" />
+    	</f:metadata>
+    
+		<h:form>
+		
+			<p:messages autoUpdate="true" closable="true" />
+	    		
+	    	<div class="Titulo">Fotos do Contrato</div>
+	    	
+	    	<p:focus context="pnlPesquisa"></p:focus>
+	    	
+	    	<p:panelGrid columns="4" id="pnlPesquisa" style="width: 450px;">
+						    			
+				<p:outputLabel value="Código Contrato" for="id" />
+				<p:inputText id="id" value="#{contratoFotosMB.contrato.id}" 
+					required="true"	disabled="#{contratoFotosMB.contrato.id != null}" >
+					<pe:keyFilter mask="num"/>
+				</p:inputText>
+	    		
+	    		<f:facet name="footer">
+		    		<p:commandButton value="Pesquisar" action="#{contratoFotosMB.pesquisar}" 
+		    			process="pnlPesquisa" update="@form" icon="ui-icon-search"
+		    			disabled="#{contratoFotosMB.contrato.id != null}" />
+		    		<p:button value="Limpar" outcome="/restrita/contrato/ContratoFotos" icon="ui-icon-close" />
+	    		</f:facet>
+	    				
+	    	</p:panelGrid>
+	    	    	
+	    	<p:panelGrid columns="4" id="painel" style="width: 800px;" 
+	    	 		styleClass="formDetalhe" rendered="#{contratoFotosMB.contrato.id ne null}">
+						    			
+				<p:outputLabel value="Cliente" for="idCliente" />
+				<p:outputLabel id="idCliente" value="#{contratoFotosMB.contrato.tbCliente.dsNomeFantasia}" />  
+					    			
+				<p:outputLabel value="Agencia" for="idAgencia" />  
+				<p:outputLabel id="idAgencia" value="#{contratoFotosMB.contrato.tbAgencia.dsNome}" />
+					    			
+				<p:outputLabel value="Vendedor" for="idVendedor" />  
+				<p:outputLabel id="idVendedor" value="#{contratoFotosMB.contrato.tbVendedor.dsNome}" />
+					    								    								    				    		
+	    		<p:outputLabel value="Campanha" for="dsCampanha"/>
+	    		<p:outputLabel id="dsCampanha" value="#{contratoFotosMB.contrato.dsCampanha}" />
+	    		
+	    		<p:outputLabel value="Data Contrato" for="dtContrato"/>
+	    		<p:outputLabel id="dtContrato" value="#{contratoFotosMB.contrato.dtContrato}" >
+	    			<f:convertDateTime pattern="dd/MM/yyyy" />
+	    		</p:outputLabel>
+	    		
+	    		<p:outputLabel value="Data Início" for="dtInicio"/>
+	    		<p:outputLabel id="dtInicio" value="#{contratoFotosMB.contrato.dtInicio}" >
+	    			<f:convertDateTime pattern="dd/MM/yyyy" />
+	    		</p:outputLabel>
+	    		
+	    		<p:outputLabel value="Data Fim" for="dtFim"/>
+	    		<p:outputLabel id="dtFim" value="#{contratoFotosMB.contrato.dtFim}" >
+	    			<f:convertDateTime pattern="dd/MM/yyyy" />
+	    		</p:outputLabel>
+					    								    								    				    		
+	    		<p:outputLabel value="Valor Total" for="vlTotal"/>
+	    		<p:outputLabel id="vlTotal" value="#{contratoFotosMB.contrato.vlTotal}" />
+
+	    	</p:panelGrid>
+	    	
+	    	<p:outputPanel id="outUpload" rendered="#{contratoFotosMB.contrato.id ne null and contratoFotosMB.acessoUpload}">
+	    	
+		    	<div class="Titulo">Adicionar Fotos</div>
+			 
+				<p:fileUpload fileUploadListener="#{contratoFotosMB.upload}"
+	                dragDropSupport="true"  
+	                update="@form" 
+	                label="Selecionar"
+	                uploadLabel="Importar"
+	                cancelLabel="Cancelar"
+	                allowTypes="/(\.|\/)(png|jpg|jpeg|gif)$/" 
+	                required="true" 
+	                multiple="true"
+	                fileLimit="20"
+	                fileLimitMessage="Limite de arquivo exceedido: 10 arquivos"
+	                invalidFileMessage="Entensões permitidas: png jpg jpeg gif"
+	                invalidSizeMessage="Tamanho máximo 5MB "
+	                sizeLimit="5000000"
+	                style="width: 800px;" />
+	                
+	    	</p:outputPanel>
+			
+	    	<p:outputPanel id="outFotos" style="margin-bottom:15px;"
+	    		rendered="${fn:length(contratoFotosMB.imagens) > 0}" >
+	    	
+		    	<div class="Titulo">Fotos Carregadas</div>
+			 	                                    
+				<p:galleria value="#{contratoFotosMB.imagens}" var="image" 
+						frameHeight="80"
+						frameWidth="100"
+						panelWidth="810"
+						panelHeight="610"						
+						autoPlay="false"  >
+					<img src="#{image}" />	
+				</p:galleria>
+				
+	    	</p:outputPanel>
+		 
+		</h:form>
+	
+    </ui:define>
+    
+</ui:composition>

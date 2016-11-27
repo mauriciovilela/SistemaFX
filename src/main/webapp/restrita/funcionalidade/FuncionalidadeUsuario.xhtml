@@ -1,0 +1,118 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Módudo / Funcionalidade</ui:define>
+    
+    <ui:define name="corpo">
+
+    	<h:form id="frmPesquisa">
+
+	    	<p:messages autoUpdate="true" closable="true" />
+	 
+			 <div style="position: relative;float: left;width: 30%;">
+			 		 
+				<div class="Titulo">Dados do Usuário</div>
+				
+			 	<p:panelGrid id="pnlUsuario" columns="2" style="width: 350px;">
+					    			
+					<p:outputLabel value="Usuário" for="idUsuario" />  
+			        <p:selectOneMenu  
+			        	id="idUsuario" value="#{funcionalidadeUsuarioMB.usuario}" filter="true" style="width: 240px;">
+			        	<p:ajax event="change" listener="#{funcionalidadeUsuarioMB.pesquisarFuncionalidadesUsuario}" update="@form" />  
+			            <f:selectItem itemLabel="" itemValue="" />  
+			            <f:selectItems value="#{funcionalidadeUsuarioMB.usuarios}"
+			            	var="item" itemLabel="#{item.dsNome}" itemValue="#{item}" />  
+			        </p:selectOneMenu> 	
+			 		
+		    		<p:outputLabel value="Login" for="dsNome"/>
+		    		<p:outputLabel id="dsNome" value="#{funcionalidadeUsuarioMB.usuario.dsUsuario}" />
+						    								    								    				    		
+		    		<p:outputLabel value="Filial" for="Filial"/>
+		    		<p:outputLabel id="Filial" value="#{funcionalidadeUsuarioMB.usuario.tbFilial.dsCidade}" />
+
+		    		<p:outputLabel value="Cliente" for="Cliente"/>
+		    		<p:outputLabel id="Cliente" value="#{funcionalidadeUsuarioMB.usuario.tbCliente.dsNomeFantasia}" />
+		    	</p:panelGrid>
+
+			 </div>
+	 
+			 <div style="position: relative;float: right;width: 70%;">
+ 		 		<p:outputPanel id="pnlFuncinalidades" rendered="#{funcionalidadeUsuarioMB.usuario.id ne null}">
+	
+			    	<div class="Titulo">Acessos</div>
+			    	
+			    	<p:panelGrid columns="1" style="width: 400px;">
+		
+						<p:outputPanel id="pnlLista">
+											        
+					        <p:commandButton value="Salvar" icon="ui-icon-disk"
+					        	actionListener="#{funcionalidadeUsuarioMB.salvar}" update="@form" 
+					        	style="margin-top:10px;" />
+					        
+					        <p:commandButton value="Copiar Acesso" icon="ui-icon-copy"
+					        	onclick="PF('confirmacao').show()" style="margin-top:10px;" />
+						
+<!-- 					    	<p:selectBooleanCheckbox itemLabel="Todos"  -->
+<!-- 	                         	widgetVar="chkSelecionar" -->
+<!-- 	                         	onchange="selecionarTudo()"> -->
+<!-- 							</p:selectBooleanCheckbox>		 -->
+											
+						    <p:dataTable widgetVar="funcionalidades" 
+						    	var="item" value="#{funcionalidadeUsuarioMB.funcionalidades}" style="margin-top:10px;">
+						        <f:facet name="header">
+						            Usuário:  <p:outputLabel value="#{funcionalidadeUsuarioMB.usuario.dsNome}" styleClass="emDestaque" /> 
+						        </f:facet>
+						        <p:column headerText="Id" style="width: 20px;">
+						        	<p:selectBooleanCheckbox value="#{item.selecionado}" />
+						        </p:column>
+						        <p:column headerText="Módulo">
+						            <h:outputText value="#{item.dsModulo}" />
+						        </p:column>
+						        <p:column headerText="Funcionalidade">
+						            <h:outputText value="#{item.dsFuncionalidade}" />
+						        </p:column>
+<!-- 						        <p:column headerText="Visível" style="width: 25px;"> -->
+<!-- 						            <h:outputText value="#{item.visivel}" /> -->
+<!-- 						        </p:column> -->
+						    </p:dataTable>					        	
+				        </p:outputPanel>
+			        
+			        </p:panelGrid>
+			        		
+		 		</p:outputPanel>
+			 </div>
+				    	
+	    	<p:dialog header="Copiar Acesso" modal="true"
+	    		widgetVar="confirmacao"	id="confirmacaoDialog">
+	    		<p:outputLabel value="Copiar Acesso de #{funcionalidadeUsuarioMB.usuario.dsNome} para:" style="margin-top:10px;" />
+	    		<br />
+			 	<p:outputPanel style="margin-top:15px;">
+			        <p:selectOneMenu id="idUsuarioCopia" value="#{funcionalidadeUsuarioMB.usuarioCopia}" 
+			        	filter="true" style="width: 240px;">
+			            <f:selectItem itemLabel="" itemValue="" />  
+			            <f:selectItems value="#{funcionalidadeUsuarioMB.usuarios}"
+			            	var="item" itemLabel="#{item.dsNome}" itemValue="#{item}" />  
+			        </p:selectOneMenu> 	
+		    	</p:outputPanel>
+		    	<br />  		
+	    		<p:commandButton value="Confirmar" oncomplete="PF('mensagem').show();"
+	    			 actionListener="#{funcionalidadeUsuarioMB.salvarCopia}" ajax="true" update="pnlLista" />
+	    		<p:button value="Cancelar" onclick="PF('confirmacao').hide(); return false;" />
+	    		<br />  
+	    	</p:dialog>
+	    	
+	    	<p:dialog header="Mensagem" onHide="location.href=location.href;"
+	    		widgetVar="mensagem" id="mensagemDialog">
+	    		<br />
+	    		<p:outputLabel value="Cópia efetuada com sucesso." style="margin-top:10px;" />
+	    		<br />
+	    		<p:commandButton value="Ok" onclick="PF('mensagem').hide();" />	    		
+	    	</p:dialog>
+	    	
+    	</h:form>
+    </ui:define>
+</ui:composition>

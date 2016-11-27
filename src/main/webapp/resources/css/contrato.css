@@ -1,0 +1,21 @@
+@charset "utf-8";
+
+body {
+	font-family: Arial;
+	font-size: 13px;
+}
+.tabela {
+	border: 1px solid #999999;
+}
+.tabelaBordas {
+	/*border: 1px solid #999999;*/
+}			
+.tabelaBordas tr td {
+	border-right: 1px solid #999999;
+	border-bottom: 1px solid #999999;
+	padding: 3px;
+}			
+.tabelaBordas tr th {
+	border-right: 1px solid #999999;
+	border-bottom: 1px solid #999999;
+}

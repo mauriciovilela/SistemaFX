@@ -1,0 +1,55 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">#{empresaMB.editando ? 'Edição de registro' : 'Novo registro'}</ui:define>
+    
+    <ui:define name="corpo">
+    	<f:metadata>
+    		<o:viewParam name="empresa" value="#{empresaMB.empresa}" />
+    	</f:metadata>
+    
+    	<h:form>
+
+	    	<p:messages autoUpdate="true" closable="true" />
+	    	
+	    	<p:focus context="painel" /> 
+	    	
+	    	<div class="Titulo">#{empresaMB.editando ? 'Edição de registro' : 'Novo registro'}</div>
+	    	
+	    	<p:panelGrid columns="2" id="painel" style="width: 100%; ">
+	    		
+	    		<p:outputLabel value="Nome" for="dsNome"/>
+	    		<p:inputText id="dsNome" size="40" maxlength="100" value="#{empresaMB.empresa.dsNome}" styleClass="maiusculo" />
+
+	    		<p:outputLabel value="Endereço" for="dsEndereco"/>
+	    		<p:inputText id="dsEndereco" size="40" maxlength="100" value="#{empresaMB.empresa.dsEndereco}" styleClass="maiusculo" />
+	    		
+	    		<p:outputLabel value="Telefone Fixo" for="dsFoneResidencial"/>
+	    		<p:inputMask id="dsFoneResidencial" size="40" mask="(99) 9999-9999?9" value="#{empresaMB.empresa.dsFoneResidencial}" />
+	    		
+	    		<p:outputLabel value="Telefone Celular" for="dsFoneCelular"/>
+	    		<p:inputMask id="dsFoneCelular" size="40" mask="(99) 9999-9999?9" value="#{empresaMB.empresa.dsFoneCelular}" />
+	    		
+	    		<p:outputLabel value="Responsável" for="dsResponsavel"/>
+	    		<p:inputText id="dsResponsavel" size="40" maxlength="60" value="#{empresaMB.empresa.dsResponsavel}" styleClass="maiusculo" />
+	    		
+	    		<p:outputLabel value="Observação" for="dsObservacao"/>
+	    		<p:inputTextarea id="dsObservacao" maxlength="200" value="#{empresaMB.empresa.dsObservacao}" styleClass="maiusculoTextArea" style="width:288px;" />
+	    					    		
+	    		<f:facet name="footer">
+	    			<p:commandButton value="Salvar" id="botaoSalvar"
+	    				action="#{empresaMB.salvar}" update="@form" icon="ui-icon-circle-check" />	    		
+	    			<p:button value="Limpar" outcome="/restrita/empresa/Empresa" icon="ui-icon-close" />
+	    			<p:button value="Voltar" outcome="/restrita/empresa/EmpresaPesquisa" 
+	    				icon="ui-icon-arrowreturnthick-1-w" style="margin-left: 25px;" />	    			
+	    		</f:facet>
+	    		
+	    	</p:panelGrid>
+    	</h:form>
+    </ui:define>
+</ui:composition>

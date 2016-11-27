@@ -1,0 +1,117 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Pesquisa de Carro</ui:define>
+    
+    <ui:define name="corpo">
+    	<h:form id="frmPesquisa">
+    	
+    		<style type="text/css">
+				.RelCarro table tr th {
+					color: red;
+				}
+				.RelCarro table tr td {
+					color: green;
+				}
+    		</style>
+
+	    	<p:messages autoUpdate="true" closable="true" />
+	 
+	 		<p:focus context="pnlPesquisa" /> 
+
+			<div class="Titulo">Pesquisa de Carro</div>
+	 
+	    	<p:panelGrid columns="2" id="pnlPesquisa" style="width: 100%; ">
+				
+	    		<p:outputLabel value="Carro" for="codigo"/>
+	    		<p:inputText id="codigo" size="40" value="#{carroPesquisaMB.filtro.codigo}" styleClass="maiusculo" />
+				
+				<p:outputLabel value="Empresa" for="idEmpresa" />  
+		        <p:selectOneMenu id="idEmpresa" value="#{carroPesquisaMB.filtro.empresa}" 
+		        	filter="true" style="width: 200px;">  
+		            <f:selectItem itemLabel="" itemValue="" />  
+		            <f:selectItems value="#{carroPesquisaMB.empresas}"
+		            	var="item" itemLabel="#{item.dsNome}" itemValue="#{item.id}" />  
+		        </p:selectOneMenu>
+				
+	    		<p:outputLabel value="Linha" for="linha"/>
+	    		<p:inputText id="linha" size="40" value="#{carroPesquisaMB.filtro.linha}" styleClass="maiusculo" />
+
+	    		<f:facet name="footer">
+	    			<p:commandButton value="Pesquisar"
+	    				update="@form" icon="ui-icon-search" />
+	    			<p:button value="Novo" outcome="/restrita/carro/Carro" icon="ui-icon-plusthick" />	
+	    		</f:facet>
+	    		
+	    	</p:panelGrid>
+	    	
+	    	<p:dataTable id="dtbRegistros" value="#{carroPesquisaMB.filtrados}" var="item"
+	    		style="margin-top: 12px" emptyMessage="Nenhum registro encontrado." rows="20"
+	    		paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom" lazy="true">
+	    		<p:column headerText="Carro" style="width: 40px !important;">
+	    			<h:outputText value="#{item.id}" />
+	    		</p:column>
+	    		<p:column headerText="Linha" >
+	    			<h:outputText value="#{item.tbLinha.dsNome}" />
+	    		</p:column>
+	    		<p:column headerText="Empresa" style="width: 120px;">
+	    			<h:outputText value="#{item.tbEmpresa.dsNome}" />
+	    		</p:column>
+	    		<p:column headerText="Carroceria" style="width: 120px;">
+	    			<h:outputText value="#{item.tbModelo.dsDescricao}" />
+	    		</p:column>
+	    		<p:column headerText="Região" style="width: 120px;" exportable="false">
+	    			<h:outputText value="#{item.tbRegiao.dsNome}" />
+	    		</p:column>
+	    		<p:column headerText="Placa" style="width: 80px;" exportable="false">
+	    			<h:outputText value="#{item.dsPlaca}" />
+	    		</p:column>
+	    		<p:column headerText="Observação" exportable="false">
+	    			<h:outputText value="#{item.dsObservacao}" />
+	    		</p:column>
+	    		<p:column style="width: 60px; text-align: center" exportable="false">
+	    			<p:button outcome="/restrita/carro/Carro" icon="ui-icon-pencil" title="Editar">
+	    				<f:param name="carro" value="#{item.pk}" />
+	    			</p:button>
+	    			<p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="PF('confirmacaoExclusao').show()"
+	    					process="@this" update=":frmPesquisa:confirmacaoExclusaoDialog">
+	    				<f:setPropertyActionListener target="#{carroPesquisaMB.selecionado}" value="#{item}" />
+	    			</p:commandButton>
+	    		</p:column>
+	    	</p:dataTable>
+	    	
+			<p:commandButton value="Imprimir" type="button" icon="ui-icon-print"
+			 	rendered="#{carroPesquisaMB.filtrados.rowCount > 0}" style="margin-top: 15px;margin-bottom:15px;">
+			    <p:printer target="dtbRegistros" />
+			</p:commandButton>
+			
+	    	<div class="botoesExportar">	
+	    	
+				<h:commandLink rendered="#{carroPesquisaMB.filtrados.rowCount > 0}">
+					<h:graphicImage library="images" name="ico_excel.png"/>
+					<p:dataExporter type="xls" target="dtbRegistros" fileName="CarrosEXCEL" />
+	            </h:commandLink>
+				
+				<h:commandLink rendered="#{carroPesquisaMB.filtrados.rowCount > 0}">
+					<h:graphicImage library="images" name="ico_pdf.png"/>
+					<p:dataExporter type="pdf" target="dtbRegistros" fileName="CarrosPDF"
+						 preProcessor="#{carroPesquisaMB.preProcessPDF}" />
+	            </h:commandLink>
+            </div>
+            
+	    	<p:confirmDialog header="Exclusão" 
+	    		message="Tem certeza que deseja excluir ?"
+	    		widgetVar="confirmacaoExclusao"	id="confirmacaoExclusaoDialog">
+	    		<p:commandButton value="Sim" oncomplete="PF('confirmacaoExclusao').hide();"
+	    			action="#{carroPesquisaMB.excluir}" process="@this"
+	    			update=":frmPesquisa:dtbRegistros" />
+	    		<p:button value="Não" onclick="PF('confirmacaoExclusao').hide(); return false;" />
+	    	</p:confirmDialog>
+	    	
+    	</h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,48 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pe="http://primefaces.org/ui/extensions"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">#{parametroMB.editando ? 'Edição de registro' : 'Novo registro'}</ui:define>
+    
+    <ui:define name="corpo">
+
+    	<f:metadata>
+    		<o:viewParam name="parametro" value="#{parametroMB.parametro}" />
+    	</f:metadata>
+    
+    	<h:form>
+
+	    	<p:messages autoUpdate="true" closable="true" />
+	    	
+	    	<p:focus context="painel" /> 
+	    	
+	    	<div class="Titulo">#{parametroMB.editando ? 'Edição de registro' : 'Novo registro'}</div>
+	    	
+	    	<p:panelGrid columns="2" id="painel" style="width: 100%; ">
+	    		
+	    		<p:outputLabel value="Código" for="id"/>
+	    		<p:inputText id="id" size="40" maxlength="100" value="#{parametroMB.parametro.id}" disabled="#{parametroMB.editando}" />
+	    		
+	    		<p:outputLabel value="Nome" for="dsNome"/>
+	    		<p:inputText id="dsNome" size="40" maxlength="100" value="#{parametroMB.parametro.dsNome}" styleClass="maiusculo" />
+		        	    				    		
+	    		<p:outputLabel value="Observação" for="dsObservacao"/>
+	    		<p:inputTextarea id="dsObservacao" maxlength="1000" value="#{parametroMB.parametro.dsValor}" style="width:400px;height: 250px;" />
+	    				    		
+	    		<f:facet name="footer">
+	    			<p:commandButton value="Salvar" id="botaoSalvar"
+	    				action="#{parametroMB.salvar}" update="@form" icon="ui-icon-circle-check" />	    		
+	    			<p:button value="Limpar" outcome="/restrita/parametro/Parametro" icon="ui-icon-close" />
+	    			<p:button value="Voltar" outcome="/restrita/parametro/ParametroPesquisa" 
+	    				icon="ui-icon-arrowreturnthick-1-w" style="margin-left: 25px;" />	    			
+	    		</f:facet>
+	    		
+	    	</p:panelGrid>
+    	</h:form>
+    </ui:define>
+</ui:composition>

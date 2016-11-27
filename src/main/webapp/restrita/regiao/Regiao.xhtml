@@ -1,0 +1,43 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">#{regiaoMB.editando ? 'Edição de registro' : 'Novo registro'}</ui:define>
+    
+    <ui:define name="corpo">
+    	<f:metadata>
+    		<o:viewParam name="regiao" value="#{regiaoMB.regiao}" />
+    	</f:metadata>
+    
+    	<h:form>
+
+	    	<p:messages autoUpdate="true" closable="true" />
+	    	
+	    	<p:focus context="painel" /> 
+	    	
+	    	<div class="Titulo">#{regiaoMB.editando ? 'Edição de registro' : 'Novo registro'}</div>
+	    	
+	    	<p:panelGrid columns="2" id="painel" style="width: 100%; ">
+	    		
+	    		<p:outputLabel value="Nome" for="dsNome"/>
+	    		<p:inputText id="dsNome" size="40" maxlength="100" value="#{regiaoMB.regiao.dsNome}" styleClass="maiusculo" />
+	    		
+	    		<p:outputLabel value="Bairro" for="dsBairro"/>
+	    		<p:inputText id="dsBairro" size="40" maxlength="100" value="#{regiaoMB.regiao.dsBairro}" styleClass="maiusculo" />
+	    		
+	    		<f:facet name="footer">
+	    			<p:commandButton value="Salvar" id="botaoSalvar"
+	    				action="#{regiaoMB.salvar}" update="@form" icon="ui-icon-circle-check" />	    		
+	    			<p:button value="Limpar" outcome="/restrita/regiao/Regiao" icon="ui-icon-close" />
+	    			<p:button value="Voltar" outcome="/restrita/regiao/RegiaoPesquisa" 
+	    				icon="ui-icon-arrowreturnthick-1-w" style="margin-left: 25px;" />	    			
+	    		</f:facet>
+	    		
+	    	</p:panelGrid>
+    	</h:form>
+    </ui:define>
+</ui:composition>

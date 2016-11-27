@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+     
+    <h:head>
+    	<h:outputStylesheet library="css" name="sistema.css" />
+        <title>Produtos</title>
+    </h:head>
+     
+    <h:body>
+    	<f:metadata>
+    		<f:event type="preRenderView" listener="#{contratoProdutoMB.initContratoProdutoMB}" />
+    	</f:metadata>    
+        <h:form>
+            <p:dataTable var="itemContrato" value="#{contratoProdutoMB.contratoProdutos}" emptyMessage="Nenhum produto associado">
+				<p:column headerText="Produto">
+					<h:outputText value="#{itemContrato.tbProduto.dsDescricao}" styleClass="maiusculo" />
+				</p:column>
+				<p:column headerText="Quantidade" style="width: 70px;">
+					<h:outputText value="#{itemContrato.nrQuantidade}" />
+				</p:column>     
+				<p:column headerText="Valor Unitário" style="width: 80px;">
+					<h:outputText value="#{itemContrato.vlUnitario}" >
+						<f:convertNumber type="currency" currencySymbol="R$ "/>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Tempo (Meses)" style="width: 88px;">
+					<h:outputText value="#{itemContrato.nrMeses}" />
+				</p:column>
+				<p:column headerText="Valor Total" style="width: 85px;">
+					<h:outputText value="#{itemContrato.vlTotal}" >
+						<f:convertNumber type="currency" currencySymbol="R$ "/>
+					</h:outputText>
+				</p:column>				
+            </p:dataTable>
+          
+        </h:form>
+    </h:body>
+     
+</html>

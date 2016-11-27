@@ -1,0 +1,70 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:pe="http://primefaces.org/ui/extensions"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Pesquisa de Carro</ui:define>
+    
+    <ui:define name="corpo">
+    	<h:form id="frmPesquisa">
+
+	    	<p:messages autoUpdate="true" closable="true" />
+	 
+	 		<p:focus context="pnlPesquisa" /> 
+
+			<div class="Titulo">Pesquisa de Carro</div>
+	 
+	    	<p:panelGrid columns="4" id="pnlPesquisa"  style="width: 450px;">
+				
+	    		<p:outputLabel value="Carro" for="idCarro"/>
+	    		<p:inputText id="idCarro" size="20" value="#{carroFiscalPesquisaMB.cdCarro}" maxlength="7" >
+	    			<pe:keyFilter mask="num"/>
+	    		</p:inputText>
+
+    			<p:commandButton value="Pesquisar" action="#{carroFiscalPesquisaMB.pesquisar}"
+    				update="@form" icon="ui-icon-search" />
+	    		
+	    	</p:panelGrid>
+	    	
+	    	<p:outputPanel style="width: 605px;margin-top:10px;" rendered="#{carroFiscalPesquisaMB.item ne null}">
+		        <p:fieldset legend="Dados do Carro">
+			        <p:panelGrid columns="2" style="width: 500px;">
+			        	<p:outputLabel value="Código" />
+			        	<p:outputLabel value="#{carroFiscalPesquisaMB.item.codigoCarro}" />
+			        	
+			        	<p:outputLabel value="Placa" />
+			        	<p:outputLabel value="#{carroFiscalPesquisaMB.item.placaCarro}" />
+			        </p:panelGrid>
+		        </p:fieldset>
+		        <p:fieldset legend="Dados do Contrato" style="margin-top:10px;">
+			        <p:panelGrid columns="2" style="width: 500px;">
+			        	
+			        	<p:outputLabel value="Campanha Contrato" />
+			        	<p:outputLabel value="#{carroFiscalPesquisaMB.item.dsCampanha}" />
+	
+			        	<p:outputLabel value="Vigência" for="outVigencia" />
+			    		<p:outputPanel id="outVigencia">
+				    		<p:outputLabel id="dtInicio" value="#{carroFiscalPesquisaMB.item.dtInicio}" >
+				    			<f:convertDateTime pattern="dd/MM/yyyy" />
+				    		</p:outputLabel> à 
+				    		<p:outputLabel id="dtFim" value="#{carroFiscalPesquisaMB.item.dtFim}" >
+				    			<f:convertDateTime pattern="dd/MM/yyyy" />
+				    		</p:outputLabel>
+			    		</p:outputPanel>
+			        	
+				    </p:panelGrid>			        
+		        </p:fieldset>
+		        <p:fieldset legend="Dados da Empresa" style="margin-top:10px;">
+			        <p:panelGrid columns="2" style="width: 500px;">
+			        	<p:outputLabel value="Empresa" />
+			        	<p:outputLabel value="#{carroFiscalPesquisaMB.item.dsEmpresa}" />
+				    </p:panelGrid>    	
+		        </p:fieldset>
+	    	</p:outputPanel>
+	    		    	
+    	</h:form>
+    </ui:define>
+</ui:composition>

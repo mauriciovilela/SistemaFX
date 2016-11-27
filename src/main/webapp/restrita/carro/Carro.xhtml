@@ -1,0 +1,77 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pe="http://primefaces.org/ui/extensions"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">#{carroMB.editando ? 'Edição de registro' : 'Novo registro'}</ui:define>
+    
+    <ui:define name="corpo">
+    	<f:metadata>
+    		<o:viewParam name="carro" value="#{carroMB.carro}" />
+    	</f:metadata>
+    
+    	<h:form>
+
+	    	<p:messages autoUpdate="true" closable="true" />
+	    	
+	    	<p:focus context="painel" /> 
+	    	
+	    	<div class="Titulo">#{carroMB.editando ? 'Edição de registro' : 'Novo registro'}</div>
+	    	
+	    	<p:panelGrid columns="2" id="painel" style="width: 100%; ">
+	    		
+	    		<p:outputLabel value="Código" for="id"/>
+	    		<p:inputText id="id" size="40" maxlength="7" value="#{carroMB.carro.id}" disabled="#{carroMB.carro.pk != null}" >
+	    			<pe:keyFilter mask="num"/>
+	    		</p:inputText>
+	    		
+	    		<p:outputLabel value="Placa" for="dsPlaca"/>
+	    		<p:inputMask id="dsPlaca" size="40" mask="aaa-9999" value="#{carroMB.carro.dsPlaca}" />
+	    		
+				<p:outputLabel value="Linha" for="idLinha" />  
+		        <p:selectOneMenu id="idLinha" value="#{carroMB.carro.tbLinha}" filter="true" style="width: 300px;">  
+		            <f:selectItem itemLabel="" itemValue="" />  
+		            <f:selectItems value="#{carroMB.linhas}"
+		            	var="item" itemLabel="#{item.dsNome}" itemValue="#{item}" />  
+		        </p:selectOneMenu> 	
+					    			
+				<p:outputLabel value="Carroceria" for="idModelo" />  
+		        <p:selectOneMenu id="idModelo" value="#{carroMB.carro.tbModelo}" filter="true" style="width: 300px;">  
+		            <f:selectItem itemLabel="" itemValue="" />  
+		            <f:selectItems value="#{carroMB.modelos}"
+		            	var="item" itemLabel="#{item.dsDescricao}" itemValue="#{item}" />  
+		        </p:selectOneMenu> 	
+					    			
+				<p:outputLabel value="Empresa" for="idEmpresa" />  
+		        <p:selectOneMenu id="idEmpresa" value="#{carroMB.carro.tbEmpresa}" filter="true" style="width: 300px;">  
+		            <f:selectItem itemLabel="" itemValue="" />  
+		            <f:selectItems value="#{carroMB.empresas}"
+		            	var="item" itemLabel="#{item.dsNome}" itemValue="#{item}" />  
+		        </p:selectOneMenu> 	
+					    			
+				<p:outputLabel value="Região" for="idRegiao" />  
+		        <p:selectOneMenu id="idRegiao" value="#{carroMB.carro.tbRegiao}" filter="true" style="width: 300px;">  
+		            <f:selectItem itemLabel="" itemValue="" />  
+		            <f:selectItems value="#{carroMB.regioes}"
+		            	var="item" itemLabel="#{item.dsNome}" itemValue="#{item}" />  
+		        </p:selectOneMenu> 	
+		        	    				    		
+	    		<p:outputLabel value="Observação" for="dsObservacao"/>
+	    		<p:inputTextarea id="dsObservacao" maxlength="200" value="#{carroMB.carro.dsObservacao}" styleClass="maiusculoTextArea" />
+	    						    		
+	    		<f:facet name="footer">
+	    			<p:commandButton value="Salvar" id="botaoSalvar"
+	    				action="#{carroMB.salvar}" update="@form" icon="ui-icon-circle-check" />	    		
+	    			<p:button value="Limpar" outcome="/restrita/carro/Carro" icon="ui-icon-close" />
+	    			<p:button value="Voltar" outcome="/restrita/carro/CarroPesquisa" 
+	    				icon="ui-icon-arrowreturnthick-1-w" style="margin-left: 25px;" />	    			
+	    		</f:facet>
+	    		
+	    	</p:panelGrid>
+    	</h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,191 @@
+@charset "utf-8";
+
+body {
+	font-size: 11px;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0px;
+	font-weight: normal;
+}
+
+.header {
+	padding: 5px 10px;
+	height: 15px;
+	background-color: #545454;
+	color: #fff;
+	box-shadow: 0px 2px 2px #ccc;
+}
+
+/* sub titulo dos paineis */
+.formDetalhe label[for] {
+    font-weight: bold;
+}
+
+#conteudo {
+	padding: 0px 8px
+}
+
+footer {
+	padding: 0px 8px;
+	margin-bottom: 10px
+}
+
+.Titulo {
+	font-size: 13px;
+	font-family: Tahoma;
+	font-weight: bold;
+	padding-top: 7px;
+	padding-bottom: 7px;
+	padding-left: 3px;
+	color: #666666;
+}
+
+.TituloAcessoNegado {
+	font-size: 20px;
+	font-family: Tahoma;
+	font-weight: bold;
+	color: red;
+	padding-top: 7px;
+	padding-bottom: 7px;
+	padding-left: 3px;
+}
+
+#login-dialog {
+	width: 290px;
+	margin: auto;
+	margin-top: 150px;
+}
+
+.grid-login {
+	background-color: #f2f2f2;
+	border-radius: 8px;
+	border: 1px solid #ccc;
+	margin-top: 8px;
+	padding: 10px
+}
+
+.rotulo {
+	width: 150px
+}
+
+.verde { color: green !important; }
+.vermelha { color: red !important; }
+.emDestaque { color: red !important;font-weight: bold !important; }
+.emDestaqueGrid { background: #d5d5d5 !important;}
+
+.destaque1 { background: #FFCCCC !important; }
+.destaque2 { background: #FFCC99 !important; }
+
+/* ALINHANDO O CABEÇALHO DOS FACET = HEADER */
+.ui-widget-header td {
+	text-align: left;
+}
+
+/* REMOVENDO AS BORDAS DAS CELULAS DAS TABELAS */
+.painelSemborda td {
+	height: 34px;
+	border-style: none !important;
+	padding: 2px 10px !important;
+}
+
+/* REMOVENDO AS BORDAS ARRENDONDADAS */
+.ui-corner-all {
+	-webkit-border-radius: 0px;
+	border-radius: 0px; 
+}
+
+/* DIMINUINDO TAMANHO ICONE */
+.ui-button-icon-only {
+	height: 22px !important;
+	width: 24px !important;
+}
+
+.maiusculoTextArea {
+	text-transform: uppercase;
+	width:288px;
+	height: 90px;
+}
+
+.maiusculo {
+	/*text-transform: uppercase;*/
+}
+
+.minusculo {
+	text-transform: lowercase;
+}
+
+.ui-panelgrid {
+	border-collapse: inherit !important;
+}
+
+.ajax-status {
+	position: fixed;
+	top: 55px;
+	right: 10px;
+	width: 35px;
+	height: 35px
+}
+
+.ui-selectmanycheckbox td {
+	border-width: 0px !important;
+	padding: 0px !important;
+}
+
+.ui-selectmanycheckbox td label {
+	padding-right: 10px;
+}
+
+.produto-tabela input {
+	width: 99%;
+}
+
+/* Customiza TabView - início */
+.ui-tabs .ui-tabs-panel {
+	padding: 0.5em 0.2em !important;
+}
+
+.ui-tabs {
+	padding: 0px !important;
+}
+
+.ui-tabs .ui-tabs-nav {
+	margin: -1px !important;
+}
+
+.ui-tabs.ui-tabs-top>.ui-tabs-nav {
+	padding: 0px !important;
+}
+/* Customiza TabView - fim */
+
+/* Menu sistema inicio */
+.menu-sistema {
+	border: 0px !important;
+	padding: 0px !important;
+	background: none !important;
+}
+
+.menu-sistema .ui-menu-parent>a .ui-menuitem-text, .menu-sistema>.ui-menu-list>.ui-menuitem>a>.ui-menuitem-text
+	{
+	color: #ffffff !important;
+}
+
+.menu-sistema .ui-icon-triangle-1-s {
+	background: url(#{ resource [ 'images:seta-para-baixo.png' ]
+}
+)
+no-repeat
+;
+
+
+}
+/* Menu sistema fim */
+
+.ui-widget {
+	font-size: 12px !important;
+}
+
+.botoesExportar {
+  display: inline;
+  margin-top: 10px;
+  margin-left: 10px;
+  position: absolute;	
+}

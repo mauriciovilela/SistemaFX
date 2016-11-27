@@ -1,0 +1,52 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pe="http://primefaces.org/ui/extensions"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">#{vendedorMB.editando ? 'Edição de registro' : 'Novo registro'}</ui:define>
+    
+    <ui:define name="corpo">
+    	<f:metadata>
+    		<o:viewParam name="vendedor" value="#{vendedorMB.vendedor}" />
+    	</f:metadata>
+    
+    	<h:form>
+
+	    	<p:messages autoUpdate="true" closable="true" />
+	    	
+	    	<p:focus context="painel" /> 
+	    	
+	    	<div class="Titulo">#{vendedorMB.editando ? 'Edição de registro' : 'Novo registro'}</div>
+	    	
+	    	<p:panelGrid columns="2" id="painel" style="width: 100%; ">
+	    		
+	    		<p:outputLabel value="Nome" for="dsNome"/>
+	    		<p:inputText id="dsNome" size="40" maxlength="100" value="#{vendedorMB.vendedor.dsNome}" styleClass="maiusculo" />
+	    		
+	    		<p:outputLabel value="Telefone" for="dsFone"/>
+	    		<p:inputMask id="dsFone" size="40" mask="(99) 9999-9999?9" value="#{vendedorMB.vendedor.dsFone}" />
+	    		
+	    		<p:outputLabel value="% Comissão" for="vlComissao"/>	    	
+	    		<p:inputText id="vlComissao" size="40" maxlength="2" value="#{vendedorMB.vendedor.vlComissao}" >
+	    			<pe:keyFilter mask="num"></pe:keyFilter>
+	    		</p:inputText>
+	    		
+	    		<p:outputLabel value="Observação" for="dsObservacao"/>
+	    		<p:inputTextarea id="dsObservacao" maxlength="200" value="#{vendedorMB.vendedor.dsObservacao}" styleClass="maiusculoTextArea" />
+	    					    		
+	    		<f:facet name="footer">
+	    			<p:commandButton value="Salvar" id="botaoSalvar"
+	    				action="#{vendedorMB.salvar}" update="@form" icon="ui-icon-circle-check" />	    		
+	    			<p:button value="Limpar" outcome="/restrita/vendedor/Vendedor" icon="ui-icon-close" />
+	    			<p:button value="Voltar" outcome="/restrita/vendedor/VendedorPesquisa" 
+	    				icon="ui-icon-arrowreturnthick-1-w" style="margin-left: 25px;" />	    			
+	    		</f:facet>
+	    		
+	    	</p:panelGrid>
+    	</h:form>
+    </ui:define>
+</ui:composition>

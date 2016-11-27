@@ -1,0 +1,111 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:pe="http://primefaces.org/ui/extensions"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Relatório de Repasse Empresa</ui:define>
+    
+    <ui:define name="corpo">    	
+    
+    	<h:form id="frmPesquisa">
+    	
+    		<h:outputScript library="js" name="locale.js"></h:outputScript>
+
+	    	<p:messages autoUpdate="true" closable="true" />
+	    	<p:focus for="mes"></p:focus>
+	 
+			<div class="Titulo">Relatório de Repasse Empresa</div>
+
+	    	<p:panelGrid columns="4" id="pnlPesquisa" style="width: 500px;">
+
+	    		<p:outputLabel value="Mês/Ano (Repasse)" for="idMesAno" />
+	    		<p:outputPanel id="idMesAno">
+					<p:spinner id="mes" maxlength="2" min="1" max="12" value="#{relRepasseMB.mes}" size="3">
+						<pe:keyFilter mask="num" />
+					</p:spinner>    		
+					 / 
+					<p:spinner id="ano" maxlength="4" value="#{relRepasseMB.ano}" size="7">
+						<pe:keyFilter mask="num" />
+					</p:spinner>    		
+	    		</p:outputPanel>
+
+    			<p:commandButton value="Pesquisar" action="#{relRepasseMB.relatorioRepasse}"
+    				process="@form" update="@form" icon="ui-icon-search" />
+	    		
+	    	</p:panelGrid>
+	    	
+	    	<p:dataTable id="dtbRegistros" value="#{relRepasseMB.relatorio}" var="item"
+	    		style="margin-top: 12px;width: 900px;" emptyMessage="Nenhum registro encontrado." rows="20"
+	    		paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom">
+	    		<p:column style="width: 55px; ">
+	    			<p:button outcome="/restrita/contrato/ContratoGeracaoPMU" icon="ui-icon-document" title="Gerar Contrato PMU">
+	    				<f:param name="contrato" value="#{item.pk}" />
+	    			</p:button>
+	    			<p:button outcome="/restrita/contrato/ContratoGeracaoIC" icon="ui-icon-document" title="Gerar Contrato IC">
+	    				<f:param name="contrato" value="#{item.pk}" />
+	    			</p:button>	    		
+    			</p:column>
+	    		<p:column headerText="Contrato" style="width: 60px">
+	    			<h:outputText value="#{item.idContrato}" />
+	    		</p:column>
+	    		<p:column headerText="Razão Social" >
+	    			<h:outputText value="#{item.dsRazao}" />
+	    		</p:column>
+	    		<p:column headerText="CNPJ" style="width: 110px">
+	    			<h:outputText value="#{item.nrCnpj}" />
+	    		</p:column>
+	    		<p:column headerText="Valor FMT" style="width: 90px;text-align: right;">
+	    			<h:outputText value="#{item.vlFmt}" >
+	    				<f:convertNumber type="currency" currencySymbol="R$ "/>
+					</h:outputText>	    			
+	    		</p:column>
+	    		<p:column headerText="Valor Empresa" style="width: 90px;text-align: right;">
+	    			<h:outputText value="#{item.vlEmpresa}" >
+	    				<f:convertNumber type="currency" currencySymbol="R$ "/>
+					</h:outputText>	    			
+	    		</p:column>
+	    		<p:column headerText="Valor Total" style="width: 90px;text-align: right;">
+	    			<h:outputText value="#{item.vlTotal}" >
+	    				<f:convertNumber type="currency" currencySymbol="R$ "/>
+					</h:outputText>	    			
+	    		</p:column>
+				<p:columnGroup type="footer">  
+				    <p:row>  
+				        <p:column footerText="Total" style="text-align: right;" colspan="4" />
+				        <p:column style="text-align: right;">
+							<f:facet name="footer">
+				    			<h:outputText value="#{relRepasseMB.vlFmt}" >
+				    				<f:convertNumber type="currency" currencySymbol="R$ "/>
+								</h:outputText>	   
+							</f:facet> 			
+						</p:column>
+				        <p:column style="text-align: right;">
+							<f:facet name="footer">
+				    			<h:outputText value="#{relRepasseMB.vlEmpresa}" >
+				    				<f:convertNumber type="currency" currencySymbol="R$ "/>
+								</h:outputText>	   
+							</f:facet> 			
+						</p:column>
+				        <p:column style="text-align: right;">
+							<f:facet name="footer">
+				    			<h:outputText value="#{relRepasseMB.vlTotal}" >
+				    				<f:convertNumber type="currency" currencySymbol="R$ "/>
+								</h:outputText>	   
+							</f:facet> 			
+						</p:column>
+				    </p:row>  
+				</p:columnGroup>	    		
+	    	</p:dataTable>
+	    	
+			<p:commandButton value="Imprimir" type="button" icon="ui-icon-print"
+			 	rendered="#{relRepasseMB.relatorio ne null}" style="margin-top: 15px;margin-bottom:15px;">
+			    <p:printer target="dtbRegistros" />
+			</p:commandButton>
+	    	
+    	</h:form>
+    	
+    </ui:define>
+</ui:composition>

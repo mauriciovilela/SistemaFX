@@ -1,0 +1,62 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pe="http://primefaces.org/ui/extensions"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">#{usuarioMB.editando ? 'Edição de registro' : 'Novo registro'}</ui:define>
+    
+    <ui:define name="corpo">
+    	<f:metadata>
+    		<o:viewParam name="usuario" value="#{usuarioMB.usuario}" />
+    	</f:metadata>
+    
+    	<h:form>
+
+	    	<p:messages autoUpdate="true" closable="true" />
+	    	
+	    	<p:focus context="painel" /> 
+	    	
+	    	<div class="Titulo">#{usuarioMB.editando ? 'Edição de registro' : 'Novo registro'}</div>
+	    	
+	    	<p:panelGrid columns="2" id="painel" style="width: 100%; ">
+	    		
+	    		<p:outputLabel value="Nome" for="dsNome"/>
+	    		<p:inputText id="dsNome" size="40" maxlength="100" value="#{usuarioMB.usuario.dsNome}" styleClass="maiusculo" />
+	    		
+	    		<p:outputLabel value="Login" for="dsUsuario"/>
+	    		<p:inputText id="dsUsuario" size="40" maxlength="100" value="#{usuarioMB.usuario.dsUsuario}" styleClass="minusculo" />
+	    		
+	    		<p:outputLabel value="Senha" for="dsSenha" disabled="#{usuarioMB.editando}" />
+	    		<p:password id="dsSenha" size="40" maxlength="100" value="#{usuarioMB.usuario.dsSenha}" disabled="#{usuarioMB.editando}" />
+					    			  			
+				<p:outputLabel value="Cliente" for="idCliente" />  
+		        <p:selectOneMenu id="idCliente" value="#{usuarioMB.usuario.tbCliente}" >  
+		            <f:selectItem itemLabel="" itemValue="" />  
+		            <f:selectItems value="#{usuarioMB.clientes}"
+		            	var="item" itemLabel="#{item.dsNomeFantasia}" itemValue="#{item}" />  
+		        </p:selectOneMenu> 	
+
+				<p:outputLabel value="Filial" for="idFilial" />  
+		        <p:selectOneMenu id="idFilial" value="#{usuarioMB.usuario.tbFilial}" 
+		        	filter="true" style="width: 157px">  
+		            <f:selectItem itemLabel="" itemValue="" />  
+		            <f:selectItems value="#{usuarioMB.filiais}"
+		            	var="item" itemLabel="#{item.dsCidade}" itemValue="#{item}" />  
+		        </p:selectOneMenu> 					
+	    							    					        
+	    		<f:facet name="footer">
+	    			<p:commandButton value="Salvar" id="botaoSalvar"
+	    				action="#{usuarioMB.salvar}" update="@form" icon="ui-icon-circle-check" />	    		
+	    			<p:button value="Limpar" outcome="/restrita/usuario/Usuario" icon="ui-icon-close" />
+	    			<p:button value="Voltar" outcome="/restrita/usuario/UsuarioPesquisa" 
+	    				icon="ui-icon-arrowreturnthick-1-w" style="margin-left: 25px;" />	    			
+	    		</f:facet>
+	    		
+	    	</p:panelGrid>
+    	</h:form>
+    </ui:define>
+</ui:composition>

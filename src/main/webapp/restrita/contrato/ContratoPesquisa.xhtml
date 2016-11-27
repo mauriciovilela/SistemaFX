@@ -1,0 +1,115 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:pe="http://primefaces.org/ui/extensions"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Pesquisa de Contrato</ui:define>
+    
+    <ui:define name="corpo">
+	
+    	<h:form id="frmPesquisa">
+
+	    	<p:messages autoUpdate="true" closable="true" />
+	 
+	 		<p:focus context="pnlPesquisa" /> 
+
+			<div class="Titulo">Pesquisa de Contrato</div>
+	 
+	    	<p:panelGrid columns="4" id="pnlPesquisa" style="width: 100%; ">
+				
+	    		<p:outputLabel value="Código Contrato" for="codigo"/>
+	    		<p:inputText id="codigo" size="20" value="#{contratoPesquisaMB.filtro.codigo}" >
+	    			<pe:keyFilter mask="num"/>
+	    		</p:inputText>
+				
+	    		<p:outputLabel value="Campanha" for="nome"/>
+	    		<p:inputText id="nome" size="30" value="#{contratoPesquisaMB.filtro.descricao}" styleClass="maiusculo" />
+
+	    		<f:facet name="footer">
+	    			<p:commandButton id="btnPesquisar" value="Pesquisar" update="@form" icon="ui-icon-search" />
+	    			<p:button value="Novo" outcome="/restrita/contrato/Contrato" icon="ui-icon-plusthick" />	
+	    		</f:facet>
+	    		
+	    	</p:panelGrid>
+	    	
+	    	<p:remoteCommand name="rcDataTable" oncomplete="dtbRegistros.filter()" update="dtbRegistros pnlPesquisa" />
+	    	<p:dataTable id="dtbRegistros" value="#{contratoPesquisaMB.filtrados}" var="item"
+	    		style="margin-top: 12px" emptyMessage="Nenhum registro encontrado." rows="20"
+	    		paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom" lazy="true">
+	    		<p:column style="width: 130px; ">
+	    			<p:button outcome="/restrita/contrato/Contrato" icon="ui-icon-search" title="Pesquisar">
+	    				<f:param name="contrato" value="#{item.pk}" />
+	    			</p:button>
+	    			<p:button outcome="/restrita/contrato/ContratoGeracao" icon="ui-icon-document" title="Gerar Contrato">
+	    				<f:param name="contrato" value="#{item.pk}" />
+	    			</p:button>
+	    			<p:button outcome="/restrita/contrato/ContratoGeracaoPMU" icon="ui-icon-document" title="Gerar Contrato PMU">
+	    				<f:param name="contrato" value="#{item.pk}" />
+	    			</p:button>
+	    			<p:button outcome="/restrita/contrato/ContratoGeracaoIC" icon="ui-icon-document" title="Gerar Contrato IC">
+	    				<f:param name="contrato" value="#{item.pk}" />
+	    			</p:button>
+	    			<p:commandButton icon="ui-icon-arrowthick-1-s" title="Baixa de Contrato" 
+	    					oncomplete="PF('confirmacaoExclusao').show()"
+	    					process="@this" update=":frmPesquisa:confirmacaoExclusaoDialog"
+	    					rendered="#{item.dtBaixaContrato eq null}">
+	    				<f:setPropertyActionListener target="#{contratoPesquisaMB.codigoBaixa}" value="#{item.pk}" />
+	    			</p:commandButton>	    			
+	    		</p:column>
+	    		<p:column headerText="Codigo" style="width: 50px;">
+	    			<h:outputText value="#{item.id}" />
+	    		</p:column>
+	    		<p:column headerText="Campanha">
+	    			<h:outputText value="#{item.dsCampanha}" styleClass="maiusculo" />
+	    		</p:column>
+	    		<p:column headerText="Data Contrato" style="width: 80px;">
+	    			<h:outputText value="#{item.dtContrato}" >
+	    				<f:convertDateTime pattern="dd/MM/yyyy" />
+	    			</h:outputText>
+	    		</p:column>
+	    		<p:column headerText="Vigência" style="width: 140px;">
+	    			<h:outputText value="#{item.dtInicio}" > <f:convertDateTime pattern="dd/MM/yyyy" /> </h:outputText>
+	    			à <h:outputText value="#{item.dtFim}" > <f:convertDateTime pattern="dd/MM/yyyy" /> </h:outputText>
+	    		</p:column>	    		
+	    		<p:column headerText="Cliente">
+	    			<h:outputText value="#{item.tbCliente.dsNomeFantasia}" styleClass="maiusculo" />
+	    		</p:column>
+	    		<p:column headerText="Agência">
+	    			<h:outputText value="#{item.tbAgencia.dsNome}" styleClass="maiusculo" />
+	    		</p:column>
+	    		<p:column headerText="Total" style="width: 75px;">
+	    			<h:outputText value="#{item.vlTotal}" >
+	    				<f:convertNumber type="currency" currencySymbol="R$ "/>
+	    			</h:outputText>
+	    		</p:column>
+	    		<p:column headerText="Sub Total" style="width: 75px;">
+	    			<h:outputText value="#{item.vlSubTotal}" >
+	    				<f:convertNumber type="currency" currencySymbol="R$ "/>
+	    			</h:outputText>
+	    		</p:column>
+	    	</p:dataTable>	    	
+
+	    	<p:confirmDialog header="Baixa de Contrato" 
+	    		message="Confirmação de baixa de Contrato"
+	    		widgetVar="confirmacaoExclusao"	id="confirmacaoExclusaoDialog">
+	    		
+	    		<p:panelGrid columns="2">
+		    		<p:outputLabel value="Data baixa Contrato" for="dtBaixa" />
+		    		<p:calendar id="dtBaixa" size="15" pattern="dd/MM/yyyy" mask="true" 
+		    			value="#{contratoPesquisaMB.dtBaixaContrato}" locale="pt_BR" />	    		
+	    		</p:panelGrid>
+	    		
+	    		<p:commandButton value="Sim" oncomplete="PF('confirmacaoExclusao').hide();"
+	    			action="#{contratoPesquisaMB.registrarBaixa}" process="@form"
+	    			update=":frmPesquisa:dtbRegistros" />
+	    		<p:button value="Não" onclick="PF('confirmacaoExclusao').hide(); return false;" />
+	    	</p:confirmDialog>
+	    		    	
+    	</h:form>
+    
+    </ui:define>
+    
+</ui:composition>

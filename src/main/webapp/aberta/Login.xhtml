@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<title>Login</title>
+	<h:outputStylesheet library="css" name="sistema.css" />
+</h:head>
+
+<h:body onload="PF('dlg').show();">
+	<h:form id="formLogin" enctype="multipart/form-data">
+
+		<p:messages autoUpdate="true" closable="true" />
+
+		<p:ajaxStatus onstart="PF('ajaxLoading').show();"
+			onsuccess="PF('ajaxLoading').hide();" />
+
+		<p:dialog widgetVar="ajaxLoading" header="Carregando"
+			draggable="false" closable="false">
+			<h:graphicImage library="images" name="ajaxloadingbar.gif" />
+		</p:dialog>
+
+		<p:fieldset legend="Login" style="width: 230px;position: absolute;top:50%; margin-top:-100px;left:50%;margin-left:-160px;">
+
+			<p:focus for="username"></p:focus>
+
+			<h:panelGrid columns="2" cellpadding="5">
+					
+				<h:outputLabel for="username" value="Usuário:" />
+				<p:inputText id="username" value="#{loginMB.login}" 
+					label="username" style="width: 140px" />
+
+				<h:outputLabel for="password" value="Senha:" />
+				<p:password id="password" value="#{loginMB.senha}" 
+					label="password" style="width: 140px" />
+
+				<f:facet name="footer">
+					<p:commandButton icon="ui-icon-unlocked" value="Entrar"
+						action="#{loginMB.realizarLogin}" />
+				</f:facet>
+			</h:panelGrid>
+		</p:fieldset>
+
+	</h:form>
+
+</h:body>
+</html>

@@ -1,0 +1,202 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pe="http://primefaces.org/ui/extensions"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">#{contratoMB.editando ? 'Visualização do Contrato' : 'Novo Contrato'}</ui:define>
+    
+    <ui:define name="corpo">
+<!--     	<f:metadata> -->
+<!--     		<o:viewParam name="contrato" value="#{contratoMB.contrato}" /> -->
+<!--     	</f:metadata> -->
+    
+    	<h:form id="frmContrato">
+    	
+	    	<p:messages autoUpdate="true" closable="true" />
+	    	
+	    	<div style="margin-top: 10px;">
+	    	
+				<div style="position: relative;float: left;width: 39%;">	
+					<p:fieldset legend="#{contratoMB.editando ? 'Visualização do Contrato' : 'Novo Contrato'}">
+				
+			    	<p:panelGrid columns="2" id="painelContrato" >
+				    								    								    				    		
+			    		<p:outputLabel value="Código" for="id"/>
+			    		<p:inputText id="id" size="15" maxlength="8" value="#{contratoMB.codigo}" disabled="#{contratoMB.editando}" >
+			    			<pe:keyFilter mask="num" />
+			    		</p:inputText>
+							
+						<p:outputLabel value="Cliente" for="idCliente" />  
+				        <p:selectOneMenu id="idCliente" value="#{contratoMB.contrato.tbCliente}" 
+				        	filter="true" style="width: 255px;" disabled="#{contratoMB.editando}">  
+				            <f:selectItem itemLabel="" itemValue="" />  
+				            <f:selectItems value="#{contratoMB.clientes}"
+				            	var="item" itemLabel="#{item.dsNomeFantasia}" itemValue="#{item}" />  
+				        </p:selectOneMenu> 	
+							    								    								    				    		
+			    		<p:outputLabel value="Campanha" for="dsCampanha"/>
+			    		<p:inputText id="dsCampanha" size="40" maxlength="100" value="#{contratoMB.contrato.dsCampanha}" 
+			    			styleClass="maiusculo" disabled="#{contratoMB.editando}" />
+							    			
+						<p:outputLabel value="Agencia" for="idAgencia" />  
+				        <p:selectOneMenu id="idAgencia" value="#{contratoMB.contrato.tbAgencia}" 
+				        	filter="true" style="width: 255px;" disabled="#{contratoMB.editando}">  
+				            <f:selectItem itemLabel="" itemValue="" />  
+				            <f:selectItems value="#{contratoMB.agencias}"
+				            	var="item" itemLabel="#{item.dsNome}" itemValue="#{item}" />  
+				        </p:selectOneMenu> 	
+							    			
+						<p:outputLabel value="Vendedor" for="idVendedor" />  
+				        <p:selectOneMenu id="idVendedor" value="#{contratoMB.contrato.tbVendedor}" 
+				        	filter="true" style="width: 255px;" disabled="#{contratoMB.editando}">  
+				            <f:selectItem itemLabel="" itemValue="" />  
+				            <f:selectItems value="#{contratoMB.vendedores}"
+				            	var="item" itemLabel="#{item.dsNome}" itemValue="#{item}" />  
+				        </p:selectOneMenu> 	
+		
+			    		<p:outputLabel value="Forma Pagamento" for="dsFormaPgto"/>	    		
+			    		<p:inputText id="dsFormaPgto" size="40" maxlength="50" value="#{contratoMB.contrato.dsFormaPgto}" disabled="#{contratoMB.editando}" />
+			    					    		
+			    		<p:outputLabel value="Data Contrato" for="dtContrato"/>
+			    		<p:calendar id="dtContrato" size="15" pattern="dd/MM/yyyy" mask="true" 
+			    			value="#{contratoMB.contrato.dtContrato}" locale="pt_BR" disabled="#{contratoMB.editando}" />
+			    		
+			    		<p:outputLabel value="Data Início / Fim" for="outData" />
+			    		
+			    		<p:outputPanel id="outData">
+			    			<p:outputLabel for="dtInicio" value="Data Início" style="display:none;"></p:outputLabel>
+				    		<p:calendar id="dtInicio" size="15" pattern="dd/MM/yyyy" mask="true" 
+				    			value="#{contratoMB.contrato.dtInicio}" locale="pt_BR" disabled="#{contratoMB.editando}" /> /
+				    		<p:outputLabel for="dtFim" value="Data Fim" style="display:none;"></p:outputLabel>	 
+				    		<p:calendar id="dtFim" size="15" pattern="dd/MM/yyyy" mask="true" 
+				    			value="#{contratoMB.contrato.dtFim}" locale="pt_BR" disabled="#{contratoMB.editando}" />
+			    		</p:outputPanel>
+			    						    					    		
+			    		<p:outputLabel value="Data Repasse" for="dtRepasse"/>
+			    		<p:calendar id="dtRepasse" size="15" pattern="dd/MM/yyyy" mask="true" 
+			    			value="#{contratoMB.contrato.dtRepasse}" locale="pt_BR" disabled="#{contratoMB.editando}" />
+			    						    		
+			    		<p:outputLabel value="Valor Sub Total" for="vlSubTotal"/>	    		
+			    		<pe:inputNumber id="vlSubTotal" size="15" maxlength="10" value="#{contratoMB.contrato.vlSubTotal}" disabled="true" />
+			    			    		
+			    		<p:outputLabel value="Valor Desconto" for="vlDesconto"/>	    		
+			    		<pe:inputNumber id="vlDesconto" size="15" maxlength="10" value="#{contratoMB.contrato.vlDesconto}" disabled="#{contratoMB.editando}" >
+							<p:ajax event="blur" listener="#{contratoMB.atualizaTotalContrato}" update="vlTotalContrato vlSubTotal" />	    		
+			    		</pe:inputNumber>
+			    		
+			    		<p:outputLabel value="Valor Total" for="vlTotalContrato"/>	    		
+			    		<pe:inputNumber id="vlTotalContrato" size="15" maxlength="10" value="#{contratoMB.contrato.vlTotal}" disabled="true" />
+	
+			    		<p:outputLabel value="Valor Produção" for="vlProducao"/>	    		
+			    		<pe:inputNumber id="vlProducao" size="15" maxlength="10" value="#{contratoMB.contrato.vlProducao}" disabled="#{contratoMB.editando}" />
+			    						    					    		
+			    		<p:outputLabel value="Data Baixa" for="dtBaixaContrato" rendered="#{contratoMB.editando}" />
+			    		<p:calendar id="dtBaixaContrato" size="15" pattern="dd/MM/yyyy" mask="true" 
+			    			value="#{contratoMB.contrato.dtBaixaContrato}" locale="pt_BR" 
+			    			rendered="#{contratoMB.editando}" disabled="true" />
+			    			
+			    		<f:facet name="header" align="left">
+			    			<p:commandButton value="Salvar" action="#{contratoMB.salvar}" 
+			    				process=":frmContrato:painelContrato" update="@form" 
+			    				icon="ui-icon-circle-check" disabled="#{contratoMB.editando}" />	    		
+			    			<p:button value="Limpar" outcome="/restrita/contrato/Contrato" icon="ui-icon-close" disabled="#{contratoMB.editando}" />
+			    		</f:facet>
+			    			
+			    	</p:panelGrid>
+				
+					</p:fieldset>
+	
+				</div>
+				<div style="position: relative;float: right;width: 60%;">
+		
+					<p:fieldset legend="Adicionar Produtos no Contrato">
+					
+						<p:panelGrid columns="2" id="painelItens" styleClass="painelItens" >
+			
+							<p:outputLabel value="Produto" for="idProduto" />
+							<p:selectOneMenu id="idProduto"
+								value="#{contratoMB.itemContrato.tbProduto}" filter="true"
+								style="width: 255px;" disabled="#{contratoMB.editando}">
+								<f:selectItem itemLabel="" itemValue="" />
+								<f:selectItems value="#{contratoMB.produtos}" var="item"
+									itemLabel="#{item.dsDescricao}" itemValue="#{item}" />
+								<p:ajax listener="#{contratoMB.consultaProduto}" process="@this"
+									update="vlUnitario" />
+							</p:selectOneMenu>
+			
+							<p:outputLabel value="Valor Unitário" for="vlUnitario" />
+							<pe:inputNumber id="vlUnitario" size="15" maxlength="10"
+								value="#{contratoMB.itemContrato.vlUnitario}" disabled="#{contratoMB.editando}">
+								<p:ajax event="blur" listener="#{contratoMB.atualizaTotal}" process="@this" update="vlTotal" />
+							</pe:inputNumber>
+			
+							<p:outputLabel value="Quantidade" for="nrQuantidade" />
+							<p:spinner id="nrQuantidade" size="12" maxlength="3" min="0"
+								value="#{contratoMB.itemContrato.nrQuantidade}" disabled="#{contratoMB.editando}" >
+								<p:ajax listener="#{contratoMB.atualizaTotal}" process="@this" update="vlTotal"  />
+							</p:spinner>
+			
+							<p:outputLabel value="Tempo (Meses)" for="nrMeses" />
+							<p:spinner id="nrMeses" size="12" maxlength="3" min="0"
+								value="#{contratoMB.itemContrato.nrMeses}" disabled="#{contratoMB.editando}">
+								<p:ajax listener="#{contratoMB.atualizaTotal}" process="@this" update="vlTotal" />
+							</p:spinner>
+			
+							<p:outputLabel value="Valor Total" for="vlTotal" />
+							<pe:inputNumber id="vlTotal" size="15" maxlength="10"
+								value="#{contratoMB.itemContrato.vlTotal}" disabled="true" />
+			
+							<f:facet name="footer">
+								<p:commandButton value="Adicionar"
+									action="#{contratoMB.adicionarProduto}" process="painelItens"
+									update="outProdutos painelItens vlTotalContrato vlSubTotal" icon="ui-icon-plus" disabled="#{contratoMB.editando}" />
+								<p:commandButton value="Limpar" action="#{contratoMB.limparItem}"
+									icon="ui-icon-close" process="@this" update="painelItens" disabled="#{contratoMB.editando}" />
+							</f:facet>
+			
+						</p:panelGrid>
+			
+				    	<p:outputPanel id="outProdutos" style="margin-top:10px;">
+							<p:dataTable value="#{contratoMB.contratoProdutos}" var="itemContrato" id="dtbContratoProduto" 
+								emptyMessage="Nenhum registro encontrado.">
+								<p:column headerText="Produto">
+									<h:outputText value="#{itemContrato.tbProduto.dsDescricao}" styleClass="maiusculo" />
+								</p:column>
+								<p:column headerText="Quantidade" style="width: 70px;">
+									<h:outputText value="#{itemContrato.nrQuantidade}" />
+								</p:column>
+								<p:column headerText="Valor Unitário" style="width: 80px;">
+									<h:outputText value="#{itemContrato.vlUnitario}" >
+										<f:convertNumber type="currency" currencySymbol="R$ "/>
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Tempo (Meses)" style="width: 88px;">
+									<h:outputText value="#{itemContrato.nrMeses}" />
+								</p:column>
+								<p:column headerText="Valor Total" style="width: 85px;">
+									<h:outputText value="#{itemContrato.vlTotal}" >
+										<f:convertNumber type="currency" currencySymbol="R$ "/>
+									</h:outputText>
+								</p:column>
+								<p:column style="width: 23px;">
+									<p:commandButton 
+										update=":frmContrato:outProdutos :frmContrato:vlTotalContrato :frmContrato:vlSubTotal" 
+										process=":frmContrato:outProdutos" 
+										disabled="#{contratoMB.editando}" icon="ui-icon-trash"
+										action="#{contratoMB.removerProduto(itemContrato)}" >
+									</p:commandButton> 
+								</p:column>
+							</p:dataTable>
+						</p:outputPanel>   
+					</p:fieldset>
+				</div>	
+			
+			</div>
+	   		
+    	</h:form>
+    </ui:define>
+</ui:composition>

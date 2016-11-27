@@ -1,0 +1,56 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pe="http://primefaces.org/ui/extensions"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">#{produtoMB.editando ? 'Edição de registro' : 'Novo registro'}</ui:define>
+    
+    <ui:define name="corpo">
+    	<f:metadata>
+    		<o:viewParam name="produto" value="#{produtoMB.produto}" />
+    	</f:metadata>
+    
+    	<h:form>
+
+	    	<p:messages autoUpdate="true" closable="true" />
+	    	
+	    	<p:focus context="painel" /> 
+	    	
+	    	<div class="Titulo">#{produtoMB.editando ? 'Edição de registro' : 'Novo registro'}</div>
+	    	
+	    	<p:panelGrid columns="2" id="painel" style="width: 100%; ">
+	    		
+	    		<p:outputLabel value="Descrição" for="dsDescricao"/>
+	    		<p:inputText id="dsDescricao" size="40" maxlength="100" value="#{produtoMB.produto.dsDescricao}" styleClass="maiusculo" />
+	    		
+	    		<p:outputLabel value="Valor Tabela" for="vlTabela"/>	    		
+	    		<pe:inputNumber id="vlTabela" size="40" maxlength="10" value="#{produtoMB.produto.vlTabela}" />
+	    		
+	    		<p:outputLabel value="Valor FMT" for="vlFmt"/>	    		
+	    		<pe:inputNumber id="vlFmt" size="40" maxlength="10" value="#{produtoMB.produto.vlFmt}" />
+	    		
+	    		<p:outputLabel value="Valor Empresa" for="vlEmpresa"/>	    		
+	    		<pe:inputNumber id="vlEmpresa" size="40" maxlength="10" value="#{produtoMB.produto.vlEmpresa}" />
+					    			
+				<p:outputLabel value="Tipo Produto" for="idTipoProduto" />  
+		        <p:selectOneRadio id="idTipoProduto" value="#{produtoMB.produto.tbTipoProduto}" style="width: 300px;">  
+		            <f:selectItems value="#{produtoMB.tipos}"
+		            	var="item" itemLabel="#{item.dsNome}" itemValue="#{item}" />  
+		        </p:selectOneRadio> 	
+					    					        
+	    		<f:facet name="footer">
+	    			<p:commandButton value="Salvar" id="botaoSalvar"
+	    				action="#{produtoMB.salvar}" update="@form" icon="ui-icon-circle-check" />	    		
+	    			<p:button value="Limpar" outcome="/restrita/produto/Produto" icon="ui-icon-close" />
+	    			<p:button value="Voltar" outcome="/restrita/produto/ProdutoPesquisa" 
+	    				icon="ui-icon-arrowreturnthick-1-w" style="margin-left: 25px;" />	    			
+	    		</f:facet>
+	    		
+	    	</p:panelGrid>
+    	</h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,63 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:pe="http://primefaces.org/ui/extensions"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Geração de Contrato</ui:define>
+    
+    <ui:define name="corpo">
+    	<h:form id="frmPesquisa">
+
+	    	<p:messages autoUpdate="true" closable="true" />
+	 
+	 		<p:focus context="pnlPesquisa" /> 
+
+			<div class="Titulo">Geração de Contrato</div>
+	 
+	    	<p:panelGrid columns="2" id="pnlPesquisa" style="width: 500px;">
+				
+	    		<p:outputLabel value="Código Contrato" for="codigo"/>
+	    		<p:inputText id="codigo" size="30" value="#{contratoPesquisaMB.filtro.codigo}" required="true" >
+	    			<pe:keyFilter mask="num"/>
+	    		</p:inputText>
+
+	    		<f:facet name="footer">
+	    			<p:commandButton value="Pesquisar" 
+	    				update="@form" icon="ui-icon-search" />
+	    			<p:button value="Novo" outcome="/restrita/contrato/Contrato" icon="ui-icon-plusthick" />	
+	    		</f:facet>
+	    		
+	    	</p:panelGrid>
+	    	
+	    	<p:dataTable id="dtbRegistros" value="#{contratoPesquisaMB.filtrados}" var="item"
+	    		style="margin-top: 12px; width: 750px;" emptyMessage="Nenhum registro encontrado." rows="20"
+	    		paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom">
+	    		<p:column style="width: 125px; text-align: center">
+	    			<p:button outcome="/restrita/contrato/ContratoGeracao" 
+	    				icon="ui-icon-document" title="Gerar Contrato" value="Gerar Contrato">
+	    				<f:param name="contrato" value="#{item.id}" />
+	    			</p:button>
+	    		</p:column>
+	    		<p:column headerText="Codigo" style="width: 50px;">
+	    			<h:outputText value="#{item.id}" />
+	    		</p:column>
+	    		<p:column headerText="Campanha">
+	    			<h:outputText value="#{item.dsCampanha}" styleClass="maiusculo" />
+	    		</p:column>
+	    		<p:column headerText="Data Contrato" style="width: 80px;">
+	    			<h:outputText value="#{item.dtContrato}" >
+	    				<f:convertDateTime pattern="dd/MM/yyyy" />
+	    			</h:outputText>
+	    		</p:column>
+	    		<p:column headerText="Vigência" style="width: 140px;">
+	    			<h:outputText value="#{item.dtInicio}" > <f:convertDateTime pattern="dd/MM/yyyy" /> </h:outputText>
+	    			à <h:outputText value="#{item.dtFim}" > <f:convertDateTime pattern="dd/MM/yyyy" /> </h:outputText>
+	    		</p:column>	    		
+	    	</p:dataTable>	    	
+	    	
+    	</h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,67 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">#{clienteMB.editando ? 'Edição de registro' : 'Novo registro'}</ui:define>
+    
+    <ui:define name="corpo">
+    	<f:metadata>
+    		<o:viewParam name="cliente" value="#{clienteMB.cliente}" />
+    	</f:metadata>
+    
+    	<h:form>
+
+	    	<p:messages autoUpdate="true" closable="true" />
+	    	
+	    	<p:focus context="painel" /> 
+	    	
+	    	<div class="Titulo">#{clienteMB.editando ? 'Edição de registro' : 'Novo registro'}</div>
+	    	
+	    	<p:panelGrid columns="2" id="painel" style="width: 100%; ">
+	    		
+	    		<p:outputLabel value="Razão Social" for="dsRazaoSocial"/>
+	    		<p:inputText id="dsRazaoSocial" size="40" maxlength="100" value="#{clienteMB.cliente.dsRazaoSocial}" styleClass="maiusculo" />
+	    		
+	    		<p:outputLabel value="Nome Fantasia" for="dsNomeFantasia"/>
+	    		<p:inputText id="dsNomeFantasia" size="40" maxlength="100" value="#{clienteMB.cliente.dsNomeFantasia}" styleClass="maiusculo" />
+	    				
+	    		<p:outputLabel value="Endereço" for="dsEndereco"/>
+	    		<p:inputText id="dsEndereco" size="40" maxlength="100" value="#{clienteMB.cliente.dsEndereco}" styleClass="maiusculo" />
+	    				
+	    		<p:outputLabel value="Responsável" for="dsResponsavel"/>
+	    		<p:inputText id="dsResponsavel" size="40" maxlength="40" value="#{clienteMB.cliente.dsResponsavel}" styleClass="maiusculo" />
+
+	    		<p:outputLabel value="CNPJ" for="nrCnpj"/>
+	    		<p:inputMask id="nrCnpj" size="40" mask="99.999.999/9999-99" value="#{clienteMB.cliente.nrCnpj}" />
+	    			
+	    		<p:outputLabel value="Telefone Fixo" for="dsFoneResidencial"/>
+	    		<p:inputMask id="dsFoneResidencial" size="40" mask="(99) 9999-9999?9" value="#{clienteMB.cliente.dsFoneResidencial}" />
+	    			
+	    		<p:outputLabel value="Telefone Celular" for="dsFoneCelular"/>
+	    		<p:inputMask id="dsFoneCelular" size="40" mask="(99) 9999-9999?9" value="#{clienteMB.cliente.dsFoneCelular}" />
+	    				
+	    		<p:outputLabel value="E-mail" for="dsEmail"/>
+	    		<p:inputText id="dsEmail" size="40" maxlength="100" value="#{clienteMB.cliente.dsEmail}" styleClass="minusculo" />
+	    				
+	    		<p:outputLabel value="Incricão Estadual" for="dsIE"/>
+	    		<p:inputText id="dsIE" size="40" maxlength="100" value="#{clienteMB.cliente.dsIncricaoEstadual}" />
+	    				
+	    		<p:outputLabel value="OBS:" for="dsObservacao"/>
+	    		<p:inputTextarea id="dsObservacao" maxlength="200" value="#{clienteMB.cliente.dsObservacao}" styleClass="maiusculoTextArea" />
+	    		
+	    		<f:facet name="footer">
+	    			<p:commandButton value="Salvar" id="botaoSalvar"
+	    				action="#{clienteMB.salvar}" update="@form" icon="ui-icon-circle-check" />	    		
+	    			<p:button value="Limpar" outcome="/restrita/cliente/Cliente" icon="ui-icon-close" />
+	    			<p:button value="Voltar" outcome="/restrita/cliente/ClientePesquisa" 
+	    				icon="ui-icon-arrowreturnthick-1-w" style="margin-left: 25px;" />	    			
+	    		</f:facet>
+	    		
+	    	</p:panelGrid>
+    	</h:form>
+    </ui:define>
+</ui:composition>

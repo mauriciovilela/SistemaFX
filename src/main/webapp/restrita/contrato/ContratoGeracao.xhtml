@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui">
+
+	<h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet library="css" name="contrato.css" />
+        <title><ui:insert name="titulo">Contrato_#{contratoGeracaoMB.contrato.id}</ui:insert></title>
+	</h:head>
+
+	<h:body>
+    	<f:metadata>
+    		<o:viewParam name="contrato" value="#{contratoGeracaoMB.contrato}" />
+    		<f:event type="preRenderView" listener="#{contratoGeracaoMB.initGeracao}" />
+    	</f:metadata>	
+	
+    	<h:form id="frmContrato">
+	    	
+	    	<table id="tbTopo" style="width:700px">
+	    		<tr>
+	    			<td>
+	    				<h:graphicImage library="images" name="logomarcaFX.png"/>
+	    			</td>
+	    			<td align="right">
+		    			<table >
+				    		<tr>
+				    			<td style="text-align: center;"><b>#{contratoGeracaoMB.contrato.tbFilial.dsNome}</b></td>
+				    		</tr>
+				    		<tr>
+				    			<td style="text-align: center;">CNPJ: #{contratoGeracaoMB.contrato.tbFilial.nrCnpj}</td>
+				    		</tr>
+				    		<tr>
+				    			<td style="text-align: center;width: 250px;">#{contratoGeracaoMB.contrato.tbFilial.dsEndereco}</td>
+				    		</tr>
+				    	</table>
+	    			</td>
+	    		</tr>
+	    	</table>
+	    	
+	    	<table id="tbCabecalho" style="width:700px" class="tabela">
+	    		<tr>
+	    			<td style="padding: 10px 10px 0px 0px">
+	    				<div style="padding-left: 10px;position: absolute; float: left;">
+	    					CONTRATO Nº <b>#{contratoGeracaoMB.contrato.id}</b>
+	    				</div>
+	    				<div style="position: absoluteb; float: right;">
+	    					Vigência 
+	    					<p:outputLabel value="#{contratoGeracaoMB.contrato.dtInicio}" >
+				    			<f:convertDateTime pattern="dd/MM/yyyy" />
+				    		</p:outputLabel> à
+	    					<p:outputLabel value="#{contratoGeracaoMB.contrato.dtFim}" >
+				    			<f:convertDateTime pattern="dd/MM/yyyy" />
+				    		</p:outputLabel>
+	    				</div>
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td style="padding:10px">
+		    			<table style="width: 100%;" class="tabela">
+				    		<tr>
+				    			<td>NOME</td>
+				    			<td>#{contratoGeracaoMB.contrato.tbCliente.dsNomeFantasia}</td>
+				    			<td></td>
+				    			<td></td>
+				    		</tr>
+				    		<tr>
+				    			<td>CONTATO</td>
+				    			<td>#{contratoGeracaoMB.contrato.tbCliente.dsResponsavel}</td>
+				    			<td></td>
+				    			<td></td>
+				    		</tr>
+				    		<tr>
+				    			<td>CNPJ</td>
+				    			<td>#{contratoGeracaoMB.contrato.tbCliente.nrCnpj}</td>
+				    			<td>IE</td>
+				    			<td>#{contratoGeracaoMB.contrato.tbCliente.dsIncricaoEstadual}</td>
+				    		</tr>
+				    		<tr>
+				    			<td>ENDEREÇO:</td>
+				    			<td colspan="3">#{contratoGeracaoMB.contrato.tbCliente.dsEndereco}</td>
+				    		</tr>
+				    		<tr>
+				    			<td>TELEFONE:</td>
+				    			<td>#{contratoGeracaoMB.contrato.tbCliente.dsFoneResidencial}</td>
+				    			<td>E-MAIL</td>
+				    			<td>#{contratoGeracaoMB.contrato.tbCliente.dsEmail}</td>
+				    		</tr>
+				    	</table>	    			
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td style="padding:10px">
+		    			<table style="width: 100%;" class="tabelaBordas">
+				    		<tr>
+				    			<th>QTD</th>
+				    			<th>TRABALHOS E OU SERVIÇOS SOLICITADOS</th>
+				    			<th>VALOR UNITÁRIO</th>
+				    			<th>TEMPO</th>
+				    			<th>TOTAL</th>
+				    		</tr>
+				    		<p:dataList value="#{contratoGeracaoMB.contratoProduto}" var="produto" type="none">
+					    		<tr>
+					    			<td>#{produto.nrQuantidade}</td>
+					    			<td>
+						    			#{produto.tbProduto.dsDescricao}
+					    			</td>
+					    			<td>
+						    			<h:outputText value="#{produto.vlUnitario}" >
+						    				<f:convertNumber type="currency" currencySymbol="R$ "/>
+						    			</h:outputText>					    			
+					    			</td>
+					    			<td>#{produto.nrMeses}</td>
+					    			<td>
+						    			<h:outputText value="#{produto.vlTotal}" >
+						    				<f:convertNumber type="currency" currencySymbol="R$ "/>
+						    			</h:outputText>					    			
+					    			</td>
+					    		</tr>				    		
+				    		</p:dataList>
+				    		<tr>
+				    			<th colspan="3">Valor Total do Contrato</th>
+				    			<th colspan="2" align="right">
+					    			<h:outputText value="#{contratoGeracaoMB.contrato.vlTotal}" >
+					    				<f:convertNumber type="currency" currencySymbol="R$ "/>
+					    			</h:outputText>						    			
+				    			</th>
+				    		</tr>
+				    	</table>	    			
+	    			</td>
+	    		</tr>	    		
+	    		<tr>
+	    			<td style="padding:0px 10px 0px 10px;">
+				    	<table style="width: 100%" class="tabela">
+							<tr>
+								<td>FORMA DE PAGAMENTO: #{contratoGeracaoMB.contrato.dsFormaPgto}</td>
+							</tr>
+						</table>
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td style="padding:10px;">
+				    	<table style="width: 100%" class="tabela">
+				    		<tr>
+				    			<td>
+				    				#{contratoGeracaoMB.termosContrato}	    				
+				    			</td>
+				    		</tr>
+				    	</table>
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td style="">
+				    	<table style="width: 100%" >
+				    		<tr>
+				    			<td align="center">
+				    				#{contratoGeracaoMB.contrato.tbFilial.dsCidade}, 	  
+									<p:outputLabel value="#{contratoGeracaoMB.contrato.dtContrato}" >
+						    			<f:convertDateTime pattern="d 'de'  MMMMM 'de' yyyy" />
+						    		</p:outputLabel>
+				    			</td>
+				    		</tr>
+				    	</table>
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td style="padding:0px 10px 0px 10px">
+				    	<table style="width: 100%">
+				    		<tr>
+				    			<td>
+				    				<span style="font-size:9px;padding-left: 50px;">Aprovado Eletrônicamente por E-mail</span><br />
+				    				__________________________________<br />
+							    	<span style="padding-left: 70px;">CONTRATANTE</span>
+				    			</td>
+				    			<td>
+				    				<br />
+							    	<b>DE ACORDO:</b>
+							    	<br /><br /><br /><br /><br />
+				    			</td>
+				    			<td align="right">
+				    				<br />
+				    				__________________________________<br />
+							    	<span style="padding-right: 90px;">CONTRATADA</span>
+				    			</td>
+				    		</tr>
+				    	</table>	    
+			    	</td>		
+	    		</tr>
+	    	</table>
+	    	
+    	</h:form>
+    	
+	</h:body>
+</html>
+
+    
+    

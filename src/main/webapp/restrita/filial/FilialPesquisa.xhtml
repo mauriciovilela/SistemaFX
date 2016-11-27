@@ -1,0 +1,69 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Pesquisa de Filial</ui:define>
+    
+    <ui:define name="corpo">
+    	<h:form id="frmPesquisa">
+
+	    	<p:messages autoUpdate="true" closable="true" />
+	 
+	 		<p:focus context="pnlPesquisa" /> 
+
+			<div class="Titulo">Pesquisa de Filial</div>
+	 
+	    	<p:panelGrid columns="2" id="pnlPesquisa" style="width: 100%; ">
+				
+	    		<p:outputLabel value="Nome" for="nome"/>
+	    		<p:inputText id="nome" size="40" value="#{filialPesquisaMB.filtro.descricao}" styleClass="maiusculo" />
+
+	    		<f:facet name="footer">
+	    			<p:commandButton value="Pesquisar" update="@form" icon="ui-icon-search" />
+	    		</f:facet>
+	    		
+	    	</p:panelGrid>
+	    	
+	    	<p:dataTable id="dtbRegistros" value="#{filialPesquisaMB.filtrados}" var="item"
+	    		style="margin-top: 12px" emptyMessage="Nenhum registro encontrado." rows="20"
+	    		paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom" lazy="true">
+	    		<p:column headerText="Código" style="text-align: center;width: 50px;">
+	    			<h:outputText value="#{item.id}" />
+	    		</p:column>
+	    		<p:column headerText="Nome">
+	    			<h:outputText value="#{item.dsNome}" styleClass="maiusculo" />
+	    		</p:column>
+	    		<p:column headerText="Cidade">
+	    			<h:outputText value="#{item.dsCidade}" styleClass="maiusculo" />
+	    		</p:column>
+	    		<p:column headerText="Endereço">
+	    			<h:outputText value="#{item.dsEndereco}" styleClass="maiusculo" />
+	    		</p:column>
+	    		<p:column headerText="CNPJ">
+	    			<h:outputText value="#{item.nrCnpj}" />
+	    		</p:column>
+	    		<p:column headerText="Telefone">
+	    			<h:outputText value="#{item.dsFone}" />
+	    		</p:column>
+	    		<p:column style="width: 60px; text-align: center">
+	    			<p:button outcome="/restrita/filial/Filial" icon="ui-icon-pencil" title="Editar">
+	    				<f:param name="filial" value="#{item.id}" />
+	    			</p:button>
+	    		</p:column>
+	    	</p:dataTable>
+	    	
+	    	<p:confirmDialog header="Exclusão" 
+	    		message="Tem certeza que deseja excluir ?"
+	    		widgetVar="confirmacaoExclusao"	id="confirmacaoExclusaoDialog">
+	    		<p:commandButton value="Sim" oncomplete="PF('confirmacaoExclusao').hide();"
+	    			action="#{filialPesquisaMB.excluir}" process="@this"
+	    			update=":frmPesquisa:dtbRegistros" />
+	    		<p:button value="Não" onclick="PF('confirmacaoExclusao').hide(); return false;" />
+	    	</p:confirmDialog>
+	    	
+    	</h:form>
+    </ui:define>
+</ui:composition>

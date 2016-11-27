@@ -1,0 +1,63 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Pesquisa de Região</ui:define>
+    
+    <ui:define name="corpo">
+    	<h:form id="frmPesquisa">
+
+	    	<p:messages autoUpdate="true" closable="true" />
+	 
+<!-- 	 		<p:focus context="pnlPesquisa" />  -->
+
+			<div class="Titulo">Pesquisa de Região</div>
+	 
+	    	<p:panelGrid columns="2" id="pnlPesquisa" style="width: 100%; ">
+				
+	    		<p:outputLabel value="Nome" for="nome"/>
+	    		<p:inputText id="nome" size="40" value="#{regiaoPesquisaMB.filtro.descricao}" styleClass="maiusculo" />
+
+	    		<f:facet name="footer">
+	    			<p:commandButton value="Pesquisar"
+	    				update="@form" icon="ui-icon-search" />
+	    			<p:button value="Novo" outcome="/restrita/regiao/Regiao" icon="ui-icon-plusthick" />	
+	    		</f:facet>
+	    		
+	    	</p:panelGrid>
+	    	
+	    	<p:dataTable id="dtbRegistros" value="#{regiaoPesquisaMB.filtrados}" var="item"
+	    		style="margin-top: 12px" emptyMessage="Nenhum registro encontrado." rows="10"
+	    		paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom" lazy="true">
+	    		<p:column headerText="Nome" style="text-align: center; width: 100px">
+	    			<h:outputText value="#{item.dsNome}" styleClass="maiusculo" />
+	    		</p:column>
+	    		<p:column headerText="Bairro">
+	    			<h:outputText value="#{item.dsBairro}" styleClass="maiusculo" />
+	    		</p:column>
+	    		<p:column style="width: 60px; text-align: center">
+	    			<p:button outcome="/restrita/regiao/Regiao" icon="ui-icon-pencil" title="Editar">
+	    				<f:param name="regiao" value="#{item.id}" />
+	    			</p:button>
+	    			<p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="PF('confirmacaoExclusao').show()"
+	    					process="@this" update=":frmPesquisa:confirmacaoExclusaoDialog">
+	    				<f:setPropertyActionListener target="#{regiaoPesquisaMB.selecionado}" value="#{item}" />
+	    			</p:commandButton>
+	    		</p:column>
+	    	</p:dataTable>
+	    	
+	    	<p:confirmDialog header="Exclusão" 
+	    		message="Tem certeza que deseja excluir ?"
+	    		widgetVar="confirmacaoExclusao"	id="confirmacaoExclusaoDialog">
+	    		<p:commandButton value="Sim" oncomplete="PF('confirmacaoExclusao').hide();"
+	    			action="#{regiaoPesquisaMB.excluir}" process="@this"
+	    			update=":frmPesquisa:dtbRegistros" />
+	    		<p:button value="Não" onclick="PF('confirmacaoExclusao').hide(); return false;" />
+	    	</p:confirmDialog>
+	    	
+    	</h:form>
+    </ui:define>
+</ui:composition>

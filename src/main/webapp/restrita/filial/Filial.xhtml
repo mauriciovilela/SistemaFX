@@ -1,0 +1,57 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pe="http://primefaces.org/ui/extensions"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">#{filialMB.editando ? 'Edição de registro' : 'Novo registro'}</ui:define>
+    
+    <ui:define name="corpo">
+
+    	<f:metadata>
+    		<o:viewParam name="filial" value="#{filialMB.filial}" />
+    	</f:metadata>
+    
+    	<h:form>
+
+	    	<p:messages autoUpdate="true" closable="true" />
+	    	
+	    	<p:focus context="painel" /> 
+	    	
+	    	<div class="Titulo">#{filialMB.editando ? 'Edição de registro' : 'Novo registro'}</div>
+	    	
+	    	<p:panelGrid columns="2" id="painel" style="width: 100%; ">
+	    		
+	    		<p:outputLabel value="Código" for="id"/>
+	    		<p:inputText id="id" size="40" maxlength="100" value="#{filialMB.filial.id}" disabled="#{filialMB.editando}" />
+	    		
+	    		<p:outputLabel value="Nome" for="dsNome"/>
+	    		<p:inputText id="dsNome" size="40" maxlength="100" value="#{filialMB.filial.dsNome}" styleClass="maiusculo" />
+	    		
+	    		<p:outputLabel value="Cidade" for="dsCidade"/>
+	    		<p:inputText id="dsCidade" size="40" maxlength="100" value="#{filialMB.filial.dsCidade}" styleClass="maiusculo" />
+	    		
+	    		<p:outputLabel value="Endereço" for="dsEndereco"/>
+	    		<p:inputText id="dsEndereco" size="40" maxlength="100" value="#{filialMB.filial.dsEndereco}" styleClass="maiusculo" />
+	    				
+	    		<p:outputLabel value="CNPJ" for="nrCnpj"/>
+	    		<p:inputMask id="nrCnpj" size="40" mask="99.999.999/9999-99" value="#{filialMB.filial.nrCnpj}" />
+	    			
+	    		<p:outputLabel value="Telefone" for="dsFone"/>
+	    		<p:inputMask id="dsFone" size="40" mask="(99) 9999-9999?9" value="#{filialMB.filial.dsFone}" />
+	    			    			
+	    		<f:facet name="footer">
+	    			<p:commandButton value="Salvar" id="botaoSalvar"
+	    				action="#{filialMB.salvar}" update="@form" icon="ui-icon-circle-check" />	    		
+	    			<p:button value="Limpar" outcome="/restrita/filial/Filial" icon="ui-icon-close" />
+	    			<p:button value="Voltar" outcome="/restrita/filial/FilialPesquisa" 
+	    				icon="ui-icon-arrowreturnthick-1-w" style="margin-left: 25px;" />	    			
+	    		</f:facet>
+	    		
+	    	</p:panelGrid>
+    	</h:form>
+    </ui:define>
+</ui:composition>
